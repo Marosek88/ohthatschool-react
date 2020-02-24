@@ -11,22 +11,22 @@ class Category(models.Model):
         ordering = ['name']
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(null=False, blank=False, max_length=100)
+    name = models.CharField(null=False, blank=False, max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return f'Category {self.name}'
+        return f'Category: {self.name}'
 
 
 class Course(models.Model):
     """Course Django model"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(null=False, blank=False, max_length=100)
+    title = models.CharField(null=False, blank=False, max_length=100, unique=True)
     owner = models.ForeignKey(User, related_name='courses', null=True, on_delete=models.SET_NULL)
     categories = models.ManyToManyField(Category, related_name='courses')
 
     def __str__(self):
-        return f'Course {self.title}'
+        return f'Course: {self.title}'
 
 
 class Module(models.Model):

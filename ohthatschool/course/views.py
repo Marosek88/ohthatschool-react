@@ -13,6 +13,11 @@ Elasticsearch usage"""
 
 class ElasticModelViewSet(viewsets.ModelViewSet):
     """Parent Class for all Elasticsearch related ViewSets"""
+    # def __init__(self, es_document_class, model_class):
+    #     self.es_document_class = es_document_class
+    #     self.model_class = model_class
+    #     super().__init__(self)
+
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         data = response.data
@@ -21,7 +26,7 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
         return response
 
     def create(self, request, *args, **kwargs):
-        data = request.data
+        data = dict(request.data)
         response = super().create(request, *args, **kwargs)
         data['id'] = response.data['id']
         # Add entry to Elasticsearch
@@ -30,16 +35,17 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
         # Try to create the entry in Elasticsearch 5 times
         while result != 'created' and count != 0:
             try:
-                CourseDocument.init()
-                result = CourseDocument(**data).save()
+                self.es_document_class.init()
+                result = self.es_document_class(**data).save()
+                break
             except:
                 pass
             count -= 1
         if result == 'created':
             return response
         else:
-            Course.objects.get(id=response.data['id']).delete()
-            return Response({"error_messages": {"elasticsearch": "Entry could not be created"}})
+            self.model_class.objects.get(id=response.data['id']).delete()
+            return Response({"error_messages": {"elasticsearch": "Entry could not be created"}}, status=400)
 
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
@@ -56,10 +62,10 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
         if result == 'Updated':
             return super().update(request, *args, **kwargs)
         elif result == 'Elasticsearch entry not found':
-            return Response({"error_messages": {"elasticsearch": "Elasticsearch entry not found"}})
+            return Response({"error_messages": {"elasticsearch": "Elasticsearch entry not found"}}, status=400)
         elif result == "Couldn't connect to Elasticsearch":
             return Response({"error_messages": {"elasticsearch": "Couldn't connect to Elasticsearch"}})
-        return Response({"error_messages": {"unknown": "Something went wrong"}})
+        return Response({"error_messages": {"unknown": "Something went wrong"}}, status=400)
 
     def partial_update(self, request, pk=None, *args, **kwargs):
         partial_result = self.update_es(pk, request.data)
@@ -70,10 +76,10 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
         if result == 'Updated':
             return super().destroy(request, *args, **kwargs)
         elif result == 'Elasticsearch entry not found':
-            return Response({"error_messages": {"elasticsearch": "Elasticsearch entry not found"}})
+            return Response({"error_messages": {"elasticsearch": "Elasticsearch entry not found"}}, status=400)
         elif result == "Couldn't connect to Elasticsearch":
             return Response({"error_messages": {"elasticsearch": "Couldn't connect to Elasticsearch"}})
-        return Response({"error_messages": {"unknown": "Something went wrong"}})
+        return Response({"error_messages": {"unknown": "Something went wrong"}}, status=400)
 
     def add_es_data(self, data_list):
         for item in data_list:
@@ -82,7 +88,7 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
                 # Try to connect to Elasticsearch 5 times
                 for i in range(5):
                     try:
-                        es_entry = CourseDocument.get(id=item['id'], ignore=404)
+                        es_entry = self.es_document_class.get(id=item['id'], ignore=404)
                         if es_entry:
                             for k, v in es_entry.to_dict().items():
                                 if k not in item.keys():
@@ -105,7 +111,7 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
         result = "Couldn't connect to Elasticsearch"
         for i in range(5):
             try:
-                es_entry = CourseDocument.get(id=es_id, ignore=404)
+                es_entry = self.es_document_class.get(id=es_id, ignore=404)
                 if es_entry:
                     es_entry.update(**data)
                     result = "Updated"
@@ -126,6 +132,7 @@ class CategoryViewSet(ElasticModelViewSet):
     ]
     serializer_class = CategorySerializer
     es_document_class = CategoryDocument
+    model_class = Category
 
 
 # ------------------------------------------------- COURSE -------------------------------------------------
@@ -137,6 +144,7 @@ class CourseViewSet(ElasticModelViewSet):
     ]
     serializer_class = CourseSerializer
     es_document_class = CourseDocument
+    model_class = Course
 
 
 # ------------------------------------------------- MODULE -------------------------------------------------
@@ -148,6 +156,7 @@ class ModuleViewSet(ElasticModelViewSet):
     ]
     serializer_class = ModuleSerializer
     es_document_class = ModuleDocument
+    model_class = Module
 
 
 # ------------------------------------------------- LESSON -------------------------------------------------
@@ -159,3 +168,4 @@ class LessonViewSet(ElasticModelViewSet):
     ]
     serializer_class = LessonSerializer
     es_document_class = LessonDocument
+    model_class = Lesson

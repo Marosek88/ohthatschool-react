@@ -1,4 +1,4 @@
-import { GET_COURSES, GET_COURSES_FORM_INFO, GET_SEARCH_BAR_INFO } from "../actions/types.js";
+import { GET_COURSES, GET_COURSES_FORM_INFO, GET_SEARCH_BAR_INFO, CREATE_COURSE } from "../actions/types.js";
 
 const initialState = {
   courses: [],
@@ -22,6 +22,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         searchBarInfo: action.payload
+      };
+    case CREATE_COURSE:
+      return {
+        ...state,
+        courses: [...state.courses, action.payload]
       };
     default:
       return state;

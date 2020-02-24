@@ -43,9 +43,22 @@ INSTALLED_APPS = [
     'django_elasticsearch_dsl_drf',
 
     'frontend',
+    'achievement.apps.AchievementConfig',
+    'connect.apps.ConnectConfig',
     'course.apps.CourseConfig',
+    'educator.apps.EducatorConfig',
+    'parent.apps.ParentConfig',
+    'student.apps.StudentConfig',
     'website.apps.WebsiteConfig',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'knox.auth.TokenAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+    )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
