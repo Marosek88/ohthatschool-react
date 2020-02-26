@@ -1,4 +1,4 @@
-import {GET_ERRORS, GET_WARNINGS, GET_INFO} from "../actions/types.js";
+import {RETURN_ERRORS, RETURN_WARNINGS, RETURN_INFO, RETURN_SUCCESS} from "../actions/types.js";
 
 const initialState = {
     error: {
@@ -12,13 +12,17 @@ const initialState = {
     info: {
         msg: {},
         status: null
+    },
+    success: {
+        msg: {},
+        status: null
     }
 
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case GET_ERRORS:
+        case RETURN_ERRORS:
             return {
                 ...state,
                 error: {
@@ -26,7 +30,7 @@ export default function (state = initialState, action) {
                     status: action.payload.status
                 }
             };
-        case GET_WARNINGS:
+        case RETURN_WARNINGS:
             return {
                 ...state,
                 warning: {
@@ -34,10 +38,18 @@ export default function (state = initialState, action) {
                     status: action.payload.status
                 }
             };
-        case GET_INFO:
+        case RETURN_INFO:
             return {
                 ...state,
                 info: {
+                    msg: action.payload.msg,
+                    status: action.payload.status
+                }
+            };
+        case RETURN_SUCCESS:
+            return {
+                ...state,
+                success: {
                     msg: action.payload.msg,
                     status: action.payload.status
                 }

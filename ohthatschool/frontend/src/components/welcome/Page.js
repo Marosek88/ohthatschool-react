@@ -1,10 +1,11 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, {Component, Fragment} from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import { getContent } from "../../actions/website";
+import {getContent} from "../../actions/website";
 
 import PieMenu from "./PieMenu";
 import PieMenuMore from "./PieMenuMore";
+import BubbleMenu from "./BubbleMenu";
 
 
 export class Page extends Component {
@@ -18,8 +19,7 @@ export class Page extends Component {
         children.map(child => {
             if (typeof element === 'undefined') {
                 return null
-            }
-            else {
+            } else {
                 element = element[`${child}`]
             }
         });
@@ -39,6 +39,7 @@ export class Page extends Component {
             <Fragment>
                 <PieMenu language={language} context={context} page_title={page_title}/>
                 <PieMenuMore/>
+                <BubbleMenu/>
             </Fragment>
         )
     }
@@ -48,4 +49,4 @@ const mapStateToProps = state => ({
     content: state.website.content
 });
 
-export default connect(mapStateToProps, { getContent })(Page);
+export default connect(mapStateToProps, {getContent})(Page);

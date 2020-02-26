@@ -2,10 +2,10 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import Select from 'react-select'
 import PropTypes from 'prop-types';
-import {getFormInfo, createCourse} from "../../actions/course";
+import {getFormData, createCourse} from "../../actions/educator";
 
 
-export class AddItem extends Component {
+export class AddCourse extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,12 +25,12 @@ export class AddItem extends Component {
 
     static propTypes = {
         formInfo: PropTypes.array.isRequired,
-        getFormInfo: PropTypes.func.isRequired,
+        getFormData: PropTypes.func.isRequired,
         createCourse: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
-        this.props.getFormInfo()
+        this.props.getFormData()
     }
 
     onChange = e => this.setState({
@@ -168,7 +168,7 @@ export class AddItem extends Component {
 }
 
 const mapStateToProps = state => ({
-    formInfo: state.course.formInfo
+    formInfo: state.educator.formInfo
 });
 
-export default connect(mapStateToProps, {getFormInfo, createCourse})(AddItem);
+export default connect(mapStateToProps, {getFormData, createCourse})(AddCourse);

@@ -28,4 +28,4 @@ class Achievement(models.Model):
     image = models.ImageField(null=True)
 
     def __str__(self):
-        return f'Student: {self.name}'
+        return f'Achievement: "{self.name}", Type: {self.type}'

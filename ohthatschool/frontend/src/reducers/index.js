@@ -1,10 +1,14 @@
 import { combineReducers } from "redux";
-import website from "./website";
+import auth from "./auth";
 import course from "./course";
+import educator from "./educator";
 import messages from "./messages";
+import website from "./website";
 
 export default combineReducers({
-  website,
+  auth,
   course,
+  educator,
   messages,
+  website,
 });

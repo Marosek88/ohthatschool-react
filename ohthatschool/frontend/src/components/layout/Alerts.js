@@ -8,10 +8,11 @@ export class Alerts extends Component {
         error: PropTypes.object.isRequired,
         warning: PropTypes.object.isRequired,
         info: PropTypes.object.isRequired,
+        success: PropTypes.object.isRequired,
     };
 
     componentDidUpdate(prevProps) {
-        const {error, warning, info , alert} = this.props;
+        const {error, warning, info, success, alert} = this.props;
         if (error !== prevProps.error) {
             if (error.msg.title) {
                 alert.error(`Title: ${error.msg.title.join()}`)
@@ -19,14 +20,30 @@ export class Alerts extends Component {
             if (error.msg.categories) {
                 alert.error("Categories: At least one category needs to be set")
             }
+            if (error.msg.detail) {
+                alert.error(`Detail: ${error.msg.detail}`)
+            }
+            if (error.msg.non_field_errors) {
+                alert.error(`Login: ${error.msg.non_field_errors}`)
+            }
+            if (error.msg.username) {
+                alert.error(`Username: ${error.msg.username}`)
+            }
+            if (error.msg.username) {
+                alert.error(`Password: ${error.msg.password}`)
+            }
         }
 
         if (warning !== prevProps.warning) {
-            alert.warning(warning.msg)
+            alert.error(warning.msg)
         }
 
         if (info !== prevProps.info) {
-            alert.success(info.msg)
+            alert.info(info.msg)
+        }
+
+        if (success !== prevProps.success) {
+            alert.success(success.msg)
         }
     }
 
@@ -39,7 +56,8 @@ export class Alerts extends Component {
 const mapStateToProps = state => ({
     error: state.messages.error,
     warning: state.messages.warning,
-    info: state.messages.info
+    info: state.messages.info,
+    success: state.messages.success
 });
 
 export default connect(mapStateToProps)(withAlert()(Alerts));

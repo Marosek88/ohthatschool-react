@@ -1,48 +1,43 @@
 import React, {Component} from 'react';
-// import { Link } from "react-router-dom";
-// import { connect } from "react-redux";
-// import PropTypes from "prop-types";
-// import { logout } from "../../actions/auth";
+import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
+import {logout} from "../../actions/auth";
 
 export class Header extends Component {
-    // static propTypes = {
-    //   auth: PropTypes.object.isRequired,
-    //   logout: PropTypes.func.isRequired
-    // };
+    static propTypes = {
+        auth: PropTypes.object.isRequired,
+        logout: PropTypes.func.isRequired
+    };
 
     render() {
-        // const { isAuthenticated, user } = this.props.auth;
+        const {isAuthenticated, user} = this.props.auth;
 
-        // const authLinks = (
-        //     <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
-        // <span className="navbar-text mr-3">
-        //   <strong>{user ? `Welcome ${user.username}` : ""}</strong>
-        // </span>
-        //         <li className="nav-item">
-        //             <button
-        //                 onClick={this.props.logout}
-        //                 className="nav-link btn btn-info btn-sm text-light"
-        //             >
-        //                 Logout
-        //             </button>
-        //         </li>
-        //     </ul>
-        // );
-        //
-        // const guestLinks = (
-        //   <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
-        //     <li className="nav-item">
-        //       <Link to="/register" className="nav-link">
-        //         Register
-        //       </Link>
-        //     </li>
-        //     <li className="nav-item">
-        //       <Link to="/login" className="nav-link">
-        //         Login
-        //       </Link>
-        //     </li>
-        //   </ul>
-        // );
+        const authLinks = (
+            <ul className="navbar-nav ml-auto">
+                <li className="nav-item mx-0 mx-lg-1">
+                    <Link to="/profile" className="nav-link py-3 px-0 px-lg-3 rounded">Profile</Link>
+                </li>
+                <li className="nav-item mx-0 mx-lg-1">
+                    <button className="nav-link py-3 px-0 px-lg-3 rounded" onClick={this.props.logout}>Logout</button>
+                </li>
+            </ul>
+        );
+
+        const guestLinks = (
+            <ul className="navbar-nav ml-auto">
+                <li className="nav-item mx-0 mx-lg-1">
+                    <Link to="/register" className="nav-link py-3 px-0 px-lg-3 rounded">Register</Link>
+                    {/*<a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'login' %} active{% endif %}"*/}
+                    {/*   href="#">Sign in</a>*/}
+                </li>
+                <li className="nav-item mx-0 mx-lg-1">
+                    <Link to="/login" className="nav-link py-3 px-0 px-lg-3 rounded">Login</Link>
+                    {/*<a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'register' %} active{% endif %}"*/}
+                    {/*   href="#">Sing up</a>*/}
+                </li>
+            </ul>
+        );
 
         return (
             <nav className="navbar navbar-expand-lg fixed-top" id="mainNav">
@@ -74,32 +69,8 @@ export class Header extends Component {
                                    href="#">Students</a>
                             </li>
                         </ul>
-                        <ul className="navbar-nav ml-auto">
+                        {isAuthenticated ? authLinks : guestLinks}
 
-                            {/*if not authenticated*/}
-
-                            <li className="nav-item mx-0 mx-lg-1">
-                                <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'login' %} active{% endif %}"
-                                   href="#">Sign in</a>
-                            </li>
-                            <li className="nav-item mx-0 mx-lg-1">
-                                <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'register' %} active{% endif %}"
-                                   href="#">Sing up</a>
-                            </li>
-
-                            {/*else*/}
-
-                            <li className="nav-item mx-0 mx-lg-1">
-                                <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'profile' %} active{% endif %}"
-                                   href="#">Profile</a>
-                            </li>
-                            <li className="nav-item mx-0 mx-lg-1">
-                                <a className="nav-link py-3 px-0 px-lg-3 rounded" href="#">Logout</a>
-                            </li>
-
-                            {/*endif*/}
-
-                        </ul>
                     </div>
                 </div>
             </nav>
@@ -107,13 +78,11 @@ export class Header extends Component {
     }
 }
 
-export default Header
+const mapStateToProps = state => ({
+    auth: state.auth
+});
 
-// const mapStateToProps = state => ({
-//   auth: state.auth
-// });
-
-// export default connect(
-//   mapStateToProps,
-//   { logout }
-// )(Header);
+export default connect(
+    mapStateToProps,
+    {logout}
+)(Header);

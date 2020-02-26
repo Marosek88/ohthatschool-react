@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_elasticsearch_dsl',
     'django_elasticsearch_dsl_drf',
+    'knox',
 
     'frontend',
+    'accounts.apps.AccountsConfig',
     'achievement.apps.AchievementConfig',
     'connect.apps.ConnectConfig',
     'course.apps.CourseConfig',
@@ -54,7 +56,7 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'knox.auth.TokenAuthentication',
+        'knox.auth.TokenAuthentication',
         # 'rest_framework.authentication.BasicAuthentication',
         # 'rest_framework.authentication.SessionAuthentication',
     )

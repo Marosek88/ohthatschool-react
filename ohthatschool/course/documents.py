@@ -40,7 +40,7 @@ class CourseDocument(Document):
     course_id = Text(fields={'keyword': Keyword()})
     title = Text(fields={'keyword': Keyword()})
     description = Text(fields={'keyword': Keyword()})
-    duration = Integer()
+    duration = ScaledFloat(scaling_factor=100)
     price = ScaledFloat(scaling_factor=100)
     rating = ScaledFloat(scaling_factor=100)
     categories = Keyword()
@@ -71,7 +71,7 @@ class ModuleDocument(Document):
     tags = Keyword()
     title = Text(fields={'keyword': Keyword()})
     description = Text(fields={'keyword': Keyword()})
-    duration = Integer()
+    duration = ScaledFloat(scaling_factor=100)
     rating = ScaledFloat(scaling_factor=100)
     active = Boolean()
 
@@ -101,7 +101,7 @@ class LessonDocument(Document):
     tags = Keyword()
     title = Text(fields={'keyword': Keyword()})
     description = Text(fields={'keyword': Keyword()})
-    duration = Integer()
+    duration = ScaledFloat(scaling_factor=100)
     rating = ScaledFloat(scaling_factor=100)
     active = Boolean()
 

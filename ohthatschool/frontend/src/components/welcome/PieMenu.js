@@ -4,10 +4,8 @@ import React, {Component} from 'react';
 export class PieMenu extends Component {
 
     render() {
-        console.log(this.props);
         return (
             <header className="index">
-                <div className="overlay" />
                 <div className="index-header">
                     <p>
                         <span>School is cool! Check all the cool things we've prepared for...</span>
