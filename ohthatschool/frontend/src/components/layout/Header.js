@@ -19,7 +19,7 @@ export class Header extends Component {
                     <Link to="/profile" className="nav-link py-3 px-0 px-lg-3 rounded">Profile</Link>
                 </li>
                 <li className="nav-item mx-0 mx-lg-1">
-                    <button className="nav-link py-3 px-0 px-lg-3 rounded" onClick={this.props.logout}>Logout</button>
+                    <a className="nav-link py-3 px-0 px-lg-3 rounded" onClick={this.props.logout}>Logout</a>
                 </li>
             </ul>
         );
@@ -28,13 +28,9 @@ export class Header extends Component {
             <ul className="navbar-nav ml-auto">
                 <li className="nav-item mx-0 mx-lg-1">
                     <Link to="/register" className="nav-link py-3 px-0 px-lg-3 rounded">Register</Link>
-                    {/*<a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'login' %} active{% endif %}"*/}
-                    {/*   href="#">Sign in</a>*/}
                 </li>
                 <li className="nav-item mx-0 mx-lg-1">
                     <Link to="/login" className="nav-link py-3 px-0 px-lg-3 rounded">Login</Link>
-                    {/*<a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'register' %} active{% endif %}"*/}
-                    {/*   href="#">Sing up</a>*/}
                 </li>
             </ul>
         );
@@ -51,23 +47,23 @@ export class Header extends Component {
                         <i className="fas fa-bars"/>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarResponsive">
-                        <ul className="navbar-nav ml-auto">
+                        <ul className="navbar-nav ml-4">
                             <li className="nav-item mx-0 mx-lg-1">
-                                <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'courses' %} active{% endif %}"
-                                   href="#">Courses</a>
+                                <a className="nav-link py-3 px-0 px-lg-3 rounded"
+                                   href="#">Start looking!</a>
                             </li>
-                            <li className="nav-item mx-0 mx-lg-1">
-                                <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'educators' %} active{% endif %}"
-                                   href="#">Educators</a>
-                            </li>
-                            <li className="nav-item mx-0 mx-lg-1">
-                                <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'schools' %} active{% endif %}"
-                                   href="#">Schools</a>
-                            </li>
-                            <li className="nav-item mx-0 mx-lg-1">
-                                <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'students' %} active{% endif %}"
-                                   href="#">Students</a>
-                            </li>
+                            {/*<li className="nav-item mx-0 mx-lg-1">*/}
+                            {/*    <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'educators' %} active{% endif %}"*/}
+                            {/*       href="#">Educators</a>*/}
+                            {/*</li>*/}
+                            {/*<li className="nav-item mx-0 mx-lg-1">*/}
+                            {/*    <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'schools' %} active{% endif %}"*/}
+                            {/*       href="#">Schools</a>*/}
+                            {/*</li>*/}
+                            {/*<li className="nav-item mx-0 mx-lg-1">*/}
+                            {/*    <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'students' %} active{% endif %}"*/}
+                            {/*       href="#">Students</a>*/}
+                            {/*</li>*/}
                         </ul>
                         {isAuthenticated ? authLinks : guestLinks}
 

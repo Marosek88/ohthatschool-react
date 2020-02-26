@@ -19,7 +19,7 @@ export class PieMenu extends Component {
         }
 
         return (
-            <header className="index">
+            <header className="index" style={{backgroundImage: "url('../../../static/img/bg-index.jpg')"}}>
                 <div className="overlay"/>
                 <div className="index-header">
                     <p>
@@ -33,22 +33,22 @@ export class PieMenu extends Component {
                                 <div className="row index-pie-row">
                                     <div className="col-6 index-pie-col">
                                         <div className="index-pie-col-background"
-                                        />
+                                        style={{backgroundImage: "url('../../../static/img/pie-student.jpg')"}}/>
                                         <div className="index-pie-text index-pie-student">Student</div>
                                     </div>
                                     <div className="col-6 index-pie-col" id="/profile/educator" onClick={openLink}>
                                         <div className="index-pie-col-background"
-                                        />
+                                        style={{backgroundImage: "url('../../../static/img/pie-educator.jpg')"}}/>
                                         <div className="index-pie-text index-pie-educator">Educator</div>
                                     </div>
                                     <div className="col-6 index-pie-col">
                                         <div className="index-pie-col-background"
-                                        />
+                                        style={{backgroundImage: "url('../../../static/img/pie-parent.jpg')"}}/>
                                         <div className="index-pie-text index-pie-parent">Parent</div>
                                     </div>
                                     <div className="col-6 index-pie-col">
                                         <div className="index-pie-col-background"
-                                        />
+                                        style={{backgroundImage: "url('../../../static/img/pie-school.jpg')"}}/>
                                         <div className="index-pie-text index-pie-school">School</div>
                                     </div>
                                 </div>

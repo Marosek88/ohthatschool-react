@@ -38,12 +38,14 @@ h6 {
 
 .content {
     width: 100%;
-    margin-top: 72px;
+    min-height: 72vh;
+    margin-top: 8vh;
 }
 
 @media (min-width: 992px) {
     .content {
-        margin-top: 104px;
+        min-height: 75vh;
+        margin-top: 12vh;
     }
 }
 
@@ -76,6 +78,7 @@ h6 {
 
 .navbar {
     background-color: var(--bg-color-1) !important;
+    box-shadow: 0 0 0.15rem 0.15rem #9f9f9f;
 }
 
 .navbar-toggler {
@@ -105,6 +108,7 @@ h6 {
 #mainNav .navbar-nav li.nav-item a.nav-link {
     color: var(--txt-color-1);
     text-align: center;
+    cursor: pointer;
 }
 
 #mainNav .navbar-nav li.nav-item a.nav-link:hover {
@@ -286,6 +290,7 @@ header.masthead h1 {
 footer.footer {
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;
+    background-color: #dfdfdf;
 }
 
 .dashboard-header {
@@ -395,7 +400,7 @@ footer.footer {
     background-color: #343a40;
     background: no-repeat center center;
     background-size: cover;
-    padding-bottom: 5.5rem;
+    padding-bottom: 4rem;
 }
 
 .index .overlay {
@@ -569,7 +574,7 @@ footer.footer {
     margin-bottom: 1.5rem;
     margin-left: 0.5rem;
     cursor: pointer;
-    background-color: #000000;
+    background-color: #3f3f3f;
     z-index: 100;
     display: -webkit-flex; /* Safari */
     display: inline-table;
@@ -586,10 +591,12 @@ footer.footer {
 
 .bubble-menu-item-active {
     background-color: #000000;
+    box-shadow: 0 0 0.5rem 0.2rem #007bff;
 }
 
 .bubble-menu-subitem-active {
-    background-color: #3f3f3f;
+    background-color: #000000;
+    box-shadow: 0 0 0.5rem 0.2rem #007bff;
 }
 
 @media (max-width: 576px) {

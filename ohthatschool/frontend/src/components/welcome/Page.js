@@ -5,7 +5,6 @@ import {getContent} from "../../actions/website";
 
 import PieMenu from "./PieMenu";
 import PieMenuMore from "./PieMenuMore";
-import BubbleMenu from "./BubbleMenu";
 
 
 export class Page extends Component {
@@ -39,7 +38,6 @@ export class Page extends Component {
             <Fragment>
                 <PieMenu language={language} context={context} page_title={page_title}/>
                 <PieMenuMore/>
-                <BubbleMenu/>
             </Fragment>
         )
     }

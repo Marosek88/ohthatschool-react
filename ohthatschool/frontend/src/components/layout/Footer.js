@@ -6,7 +6,7 @@ export class Footer extends Component {
     render() {
 
         return (
-            <footer className="footer bg-light mt-auto">
+            <footer className="footer mt-auto">
                 <div className="container wrapper">
                     <div className="row">
                         <div className="col-lg-6 h-100 text-center text-lg-left my-auto">

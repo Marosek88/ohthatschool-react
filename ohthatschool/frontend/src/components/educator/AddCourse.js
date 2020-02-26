@@ -17,7 +17,6 @@ export class AddCourse extends Component {
                 duration: 0,
                 price: 0
             },
-            visibility: false,
         };
 
         this.handleMultiChange = this.handleMultiChange.bind(this);
@@ -70,34 +69,16 @@ export class AddCourse extends Component {
                 duration: 0,
                 price: 0,
             },
-            visibility: "",
         });
-    };
-
-    toggleVisibility = () => {
-        if (this.state.visibility === true) {
-            this.setState({
-                visibility: false,
-            });
-        } else {
-            this.setState({
-                visibility: true,
-            });
-        }
     };
 
     render() {
         const {title, description, categories, duration, price} = this.state.form_data;
-        const visibility = this.state.visibility;
 
         let categoryOptions = [];
         this.props.formInfo.map(category => {
             categoryOptions.push({value: category.id, label: category.name})
         });
-
-        const arrow = visible => (
-            <i className={visible ? "ml-3 fas fa-chevron-down" : "ml-3 fas fa-chevron-right"}/>
-        );
 
         const project_form = (
             <form onSubmit={this.onSubmit}>
@@ -160,8 +141,8 @@ export class AddCourse extends Component {
 
         return (
             <div className="card card-body mt-4 mb-4">
-                <h3 onClick={this.toggleVisibility} className="vns-link">Add Course {arrow(visibility)}</h3>
-                {visibility ? project_form : null}
+                <h2>Add Course</h2>
+                {project_form}
             </div>
         );
     }

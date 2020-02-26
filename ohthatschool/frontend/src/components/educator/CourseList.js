@@ -69,13 +69,11 @@ export class CourseList extends Component {
         );
 
         return (
-            <div className="container wrapper-bg">
                 <div className="row py-4">
 
                     {this.state.pageLoading ? loading : table}
 
                 </div>
-            </div>
         );
     }
 }

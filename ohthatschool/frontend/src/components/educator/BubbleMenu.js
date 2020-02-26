@@ -7,108 +7,63 @@ import {changeView} from "../../actions/educator";
 export class BubbleMenu extends Component {
     state = {
         main_view: this.props.view,
+        sub_view: ""
     };
 
     static propTypes = {
         changeView: PropTypes.func.isRequired,
     };
 
-
     onButtonClick = (view) => {
-        let clicked = document.getElementById(view);
-        console.log(clicked);
-        let active = document.getElementsByClassName('bubble-menu-item bubble-menu-item-active')
-        for (let i = 0; i < active.length; i++) {
-            active[i].className = 'bubble-menu-item'
+        if (view === "courses") {
+            this.setState({main_view: view, sub_view: "course_list"});
+            this.props.changeView("course_list");
+        } else {
+            this.setState({main_view: view, sub_view: ""});
+            this.props.changeView(view);
         }
-        clicked.className = 'bubble-menu-item bubble-menu-item-active';
-
-        this.setState({main_view: view});
-
-        view = view === "courses" ? "course_list" : view
-
-        this.props.changeView(view);
     };
 
     onSubButtonClick = (view) => {
-        let clicked = document.getElementById(view);
-
-        let active = document.getElementsByClassName('bubble-menu-subitem bubble-menu-subitem-active');
-        for (let i = 0; i < active.length; i++) {
-            active[i].className = 'bubble-menu-subitem'
-        }
-        clicked.className = 'bubble-menu-subitem bubble-menu-subitem-active';
-
+        this.setState({sub_view: view});
         this.props.changeView(view);
     };
-    //
-    // componentDidMount() {
-    //     this.props.getFormData()
-    // }
-
-    // toggleVisibility = () => {
-    //     if (this.state.visibility === true) {
-    //         this.setState({
-    //             visibility: false,
-    //         });
-    //     } else {
-    //         this.setState({
-    //             visibility: true,
-    //         });
-    //     }
-    // };
 
     render() {
-        console.log(this.state);
-        const educator_page = (
-            <div className="bubble-menu-item" id="educator_page"
-                 onClick={() => this.onButtonClick("educator_page")}>
-                <div className="bubble-menu-text">
-                    <i className="fas fa-id-card"/>
-                </div>
-            </div>);
+        const {main_view, sub_view} = this.state;
 
-        const courses = (
-            <div className="bubble-menu-item" id="courses"
-                 onClick={() => this.onButtonClick("courses")}>
+        const big_button = (name, icon) => (
+            <div className={main_view === name ? "bubble-menu-item bubble-menu-item-active" : "bubble-menu-item"}
+                 id={name}
+                 onClick={() => this.onButtonClick(name)}>
                 <div className="bubble-menu-text">
-                    <i className="fas fa-book-reader"/>
+                    <i className={icon}/>
                 </div>
-            </div>);
-        const course_list = (
-            <div className="bubble-menu-subitem" id="course_list"
-                 onClick={() => this.onSubButtonClick("course_list")}>
-                <div className="bubble-menu-text">
-                    <i className="fas fa-th-list"/>
-                </div>
-            </div>);
-        const add_course = (
-            <div className="bubble-menu-subitem" id="add_course"
-                 onClick={() => this.onSubButtonClick("add_course")}>
-                <div className="bubble-menu-text">
-                    <i className="fas fa-plus"/>
-                </div>
-            </div>);
+            </div>
+        );
 
-        const student_list = (
-            <div className="bubble-menu-item" id="student_list"
-                 onClick={() => this.onButtonClick("student_list")}>
+        const small_button = (name, icon) => (
+            <div className={sub_view === name ? "bubble-menu-subitem bubble-menu-subitem-active" : "bubble-menu-subitem"}
+                 id={name}
+                 onClick={() => this.onSubButtonClick(name)}>
                 <div className="bubble-menu-text">
-                    <i className="fas fa-user-graduate"/>
+                    <i className={icon}/>
                 </div>
-            </div>);
+            </div>
+        );
 
-        const achievements = (
-            <div className="bubble-menu-item" id="achievements"
-                 onClick={() => this.onButtonClick("achievements")}>
-                <div className="bubble-menu-text">
-                    <i className="fas fa-trophy"/>
-                </div>
-            </div>);
+        const educator_page = big_button("educator_page", "fas fa-id-card")
 
+        const courses = big_button("courses", "fas fa-book-reader");
+        const course_list = small_button("course_list", "fas fa-th-list")
+        const add_course = small_button("add_course", "fas fa-plus")
+
+        const student_list = big_button("student_list", "fas fa-user-graduate")
+
+        const achievements = big_button("achievements", "fas fa-trophy")
 
         const bubble_menu = (
-            <div className="bubble-menu-container">
+            <div className="bubble-menu-container" id="bubble-menu-container">
                 {educator_page}
 
                 {courses}

@@ -32,7 +32,7 @@ export default function (state = initialState, action) {
         case EDU_DEFAULT_VIEW:
             return {
                 ...state,
-                view: "course_list",
+                view: "educator_page",
             };
         case EDU_CHANGE_VIEW:
             return {
