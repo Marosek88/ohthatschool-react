@@ -38,26 +38,22 @@ h6 {
 
 .content {
     width: 100%;
-    min-height: 72vh;
-    margin-top: 8vh;
+    min-height: 68vh;
 }
 
 @media (min-width: 992px) {
     .content {
-        min-height: 75vh;
-        margin-top: 12vh;
+        min-height: 72vh;
     }
 }
 
 .wrapper {
-    margin-left: 25px auto;
-    margin-right: 25px auto;
     position: relative;
 }
 
 @media (min-width: 992px) {
     .wrapper {
-        width: 1000px;
+        width: 900px;
     }
 }
 
@@ -81,7 +77,15 @@ h6 {
     box-shadow: 0 0 0.15rem 0.15rem #9f9f9f;
 }
 
+.navbar-brand {
+    font-family: 'Pacifico', cursive;
+}
+
 .navbar-toggler {
+    background-color: var(--bg-color-1) !important;
+}
+
+.navbar-toggler:hover {
     background-color: var(--bg-color-2) !important;
 }
 
@@ -324,21 +328,21 @@ footer.footer {
 }
 
 .user-photo {
-    width: 80px;
-    height: 80px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     background-color: grey;
-    margin: 5px;
+    margin: 5px auto;
     background-size: cover !important;
 }
 
-@media (min-width: 576px) {
-    .user-photo {
-        margin: 20px;
-        width: 120px;
-        height: 120px;
-    }
-}
+/*@media (min-width: 576px) {*/
+/*    .user-photo {*/
+/*        margin: 20px;*/
+/*        width: 120px;*/
+/*        height: 120px;*/
+/*    }*/
+/*}*/
 
 /* -------------------- Tiles -------------------- */
 
@@ -526,10 +530,16 @@ footer.footer {
     }
 }
 
+.go-to-top-container {
+    position: sticky;
+    position: -webkit-sticky;
+    bottom: 0px;
+    display: block;
+    text-align: right;
+}
+
 .go-to-top {
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
+    margin: 2rem;
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
@@ -537,6 +547,7 @@ footer.footer {
     z-index: 100;
     display: -webkit-flex; /* Safari */
     display: inline-table;
+    cursor: pointer;
 }
 
 .go-to-top-text {
@@ -551,13 +562,14 @@ footer.footer {
 .bubble-menu-container {
     position: fixed;
     right: 1rem;
-    top: 8rem;
-    width: 5rem;
+    top: 5rem;
+    width: 4rem;
+    opacity: 70%;
 }
 
 .bubble-menu-item {
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
     border-radius: 50%;
     margin-bottom: 1.5rem;
     cursor: pointer;
@@ -568,11 +580,11 @@ footer.footer {
 }
 
 .bubble-menu-subitem {
-    width: 4rem;
-    height: 4rem;
+    width: 3.5rem;
+    height: 3.5rem;
     border-radius: 50%;
     margin-bottom: 1.5rem;
-    margin-left: 0.5rem;
+    margin-left: 0.25rem;
     cursor: pointer;
     background-color: #3f3f3f;
     z-index: 100;
@@ -599,7 +611,7 @@ footer.footer {
     box-shadow: 0 0 0.5rem 0.2rem #007bff;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 575.5px) {
     .bubble-menu-container {
         right: 0.5rem;
         top: 6rem;
@@ -700,4 +712,56 @@ footer.footer {
 .vns-spatial-asset-item {
     border-right-width: 0;
     border-left-width: 0;
+}
+
+.row-center {
+    justify-content: center;
+}
+
+.profile-details {
+    text-align: left;
+}
+
+@media(max-width: 575.5px) {
+    .profile-details {
+        text-align: center;
+    }
+}
+
+.round-item {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: #007bff;
+    z-index: 100;
+    display: -webkit-flex; /* Safari */
+    display: inline-table;
+}
+
+.round-item:hover {
+    opacity: 0.90;
+    color: #fff;
+    cursor: pointer;
+}
+
+.round-item-text {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 4rem;
+    font-weight: 900;
+    color: #fff;
+}
+
+@media (max-width: 576px) {
+    .round-item {
+        width: 6rem;
+        height: 6rem;
+    }
+
+    .round-item-text {
+        font-size: 3rem;
+        font-weight: 800;
+    }
 }

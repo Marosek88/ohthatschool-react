@@ -1,5 +1,6 @@
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from elasticsearch_dsl import Q
 import uuid
 
@@ -61,8 +62,27 @@ class CourseEducatorViewSet(ElasticModelViewSet):
     def get_queryset(self):
         return self.request.user.courses.all()
 
+    # def create(self, request, *args, **kwargs):
+    #     response = super().create(request, *args, **kwargs)
+    #     return response
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+    @action(detail=True, methods=['GET'])
+    def get_course_modules(self, request, pk=None):
+        course = self.get_object()
+        course_modules = course.modules
+        serializer = ModuleSerializer(course_modules, many=True)
+        self.add_es_data(serializer.data, ModuleDocument)
+        return Response(serializer.data, status=200)
+
+    # @action(detail=True, methods=['POST'])
+    # def create_module(self, request, pk=None):
+    #     course = self.get_object()
+    #     module = Module
+    #     serializer = ModuleSerializer(course_modules, many=True)
+    #     return Response(serializer.data, status=200)
 
 
 # ------------------------------------------------- COURSE STUDENT -------------------------------------------------
@@ -77,7 +97,7 @@ class CourseStudentViewSet(ElasticModelViewSet):
     model_class = Course
 
 
-# ------------------------------------------------- MODULE -------------------------------------------------
+# ------------------------------------------------- MODULE EVERYONE -------------------------------------------------
 class ModuleViewSet(ElasticModelViewSet):
     """Module viewset"""
     queryset = Module.objects.all()
@@ -88,13 +108,78 @@ class ModuleViewSet(ElasticModelViewSet):
     es_document_class = ModuleDocument
     model_class = Module
 
+    """Any modify functions are disabled"""
+    def create(self, request, *args, **kwargs):
+        pass
 
-# ------------------------------------------------- LESSON -------------------------------------------------
+    def update(self, request, *args, **kwargs):
+        pass
+
+    def partial_update(self, request, pk=None, *args, **kwargs):
+        pass
+
+    def destroy(self, request, pk=None, *args, **kwargs):
+        pass
+
+
+# ------------------------------------------------- MODULE EDUCATOR -------------------------------------------------
+class ModuleEducatorViewSet(ElasticModelViewSet):
+    """Educator's Module viewset"""
+    queryset = Module.objects.all()
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+    serializer_class = ModuleSerializer
+    es_document_class = ModuleDocument
+    model_class = Module
+
+    def get_queryset(self):
+        educators_courses = self.request.user.courses.all()
+        educators_modules = Module.objects.none()
+        for course in educators_courses:
+            educators_modules |= course.modules.all()
+        return educators_modules
+
+    @action(detail=True, methods=['GET'])
+    def get_module_lessons(self, request, pk=None):
+        module = self.get_object()
+        module_lessons = module.lessons
+        serializer = LessonSerializer(module_lessons, many=True)
+        self.add_es_data(serializer.data, LessonDocument)
+        return Response(serializer.data, status=200)
+
+
+# ------------------------------------------------- LESSON EVERYONE -------------------------------------------------
 class LessonViewSet(ElasticModelViewSet):
     """Lesson viewset"""
     queryset = Lesson.objects.all()
     permission_classes = [
         permissions.AllowAny
+    ]
+    serializer_class = LessonSerializer
+    es_document_class = LessonDocument
+    model_class = Lesson
+
+    """Any modify functions are disabled"""
+    def create(self, request, *args, **kwargs):
+        pass
+
+    def update(self, request, *args, **kwargs):
+        pass
+
+    def partial_update(self, request, pk=None, *args, **kwargs):
+        pass
+
+    def destroy(self, request, pk=None, *args, **kwargs):
+        pass
+
+
+# ------------------------------------------------- LESSON EDUCATOR -------------------------------------------------
+class LessonEducatorViewSet(ElasticModelViewSet):
+    """Lesson viewset"""
+    queryset = Lesson.objects.all()
+    permission_classes = [
+        permissions.IsAuthenticated
     ]
     serializer_class = LessonSerializer
     es_document_class = LessonDocument

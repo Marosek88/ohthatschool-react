@@ -10,7 +10,6 @@ export class AddCourse extends Component {
         super(props);
         this.state = {
             form_data: {
-                owner: 1,
                 title: '',
                 description: '',
                 categories: [],
@@ -54,7 +53,6 @@ export class AddCourse extends Component {
     onSubmit = e => {
         e.preventDefault();
         let form = new FormData();
-        form.append('owner', this.state.form_data.owner);
         form.append('title', this.state.form_data.title);
         form.append('description', this.state.form_data.description);
         form.append('categories', this.state.form_data.categories.value);

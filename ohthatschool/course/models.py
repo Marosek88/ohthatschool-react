@@ -23,7 +23,7 @@ class Course(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(null=False, blank=False, max_length=100, unique=True)
     owner = models.ForeignKey(User, related_name='courses', null=True, on_delete=models.SET_NULL)
-    categories = models.ManyToManyField(Category, related_name='courses')
+    category = models.ForeignKey(Category, related_name='courses', null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'Course: {self.title}'
@@ -43,7 +43,7 @@ class Lesson(models.Model):
     """Lesson Django model"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(null=False, blank=False, max_length=100)
-    course = models.ForeignKey(Module, related_name='lessons', null=True, on_delete=models.SET_NULL)
+    module = models.ForeignKey(Module, related_name='lessons', null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'Lesson: {self.title}'

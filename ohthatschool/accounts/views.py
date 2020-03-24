@@ -1,19 +1,66 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser, FormParser
 from knox.models import AuthToken
-from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
+
+from .models import UserProfile
+from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, UserProfileSerializer
+from .documents import UserProfileDocument
+
+from misc.classes import ElasticModelViewSet
 
 
 class RegisterAPI(generics.GenericAPIView):
     """Register API"""
     serializer_class = RegisterSerializer
 
+    def get_serializer_context(self):
+        context = super(RegisterAPI, self).get_serializer_context()
+        context.update({
+            "exclude_email_list": ['test@test.com', 'test1@test.com']
+            # extra data
+        })
+        return context
+
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        data = request.data
+        data['username'] = data['email']
+        profile_data = {
+            'first_name': data['first_name'],
+            'last_name': data['last_name'],
+            'email': data['email'],
+            'active': True,
+            'location': {'lat': 53.337272, 'lon': -6.268247}
+        }
+        del data['first_name']
+        del data['last_name']
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+
+        profile_data['id'] = user.id
+        # Create a User Profile entry Django database
+        user_profile = UserProfile(id_id=profile_data['id'],
+                                   first_name=profile_data['first_name'],
+                                   last_name=profile_data['last_name']
+                                   )
+        user_profile.save()
+        # Create a User Profile entry in Elasticsearch
+        result = ""
+        count = 5
+        # Try to create the entry in Elasticsearch 5 times
+        while result == "" and count != 0:
+            try:
+                UserProfileDocument.init()
+                result = UserProfileDocument(**profile_data).save()
+                break
+            except:
+                pass
+            count -= 1
+
         return Response({
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "user": profile_data,
             "token": AuthToken.objects.create(user)[1]
         })
 
@@ -26,8 +73,15 @@ class LoginAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
+        user_profile = UserProfile.objects.get(pk=user.id)
+        user_profile_serializer = UserProfileSerializer(user_profile)
+        user_profile_data = user_profile_serializer.data
+        es_user = UserProfileDocument.get(id=user.id).to_dict()
+        for key, value in es_user.items():
+            if key not in user_profile_data.keys():
+                user_profile_data[key] = value
         return Response({
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "user": user_profile_data,
             "token": AuthToken.objects.create(user)[1]
         })
 
@@ -42,3 +96,31 @@ class UserAPI(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class UserProfileViewSet(ElasticModelViewSet):
+    """Educator's Course viewset"""
+    # queryset = Course.objects.all()
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+    serializer_class = UserProfileSerializer
+    es_document_class = UserProfileDocument
+    model_class = UserProfile
+
+    parser_classes = (MultiPartParser, FormParser)
+
+    def get_queryset(self):
+        return UserProfile.objects.filter(id=self.request.user.id)
+
+    def perform_create(self, serializer):
+        serializer.save(id=self.request.user)
+
+    @action(detail=True, methods=['POST'])
+    def upload_picture(self, request, pk=None):
+        user_profile = self.get_object()
+        user_profile.picture = request.data['picture']
+        user_profile.save()
+        serializer = UserProfileSerializer(user_profile)
+        return Response(serializer.data, 200)
+

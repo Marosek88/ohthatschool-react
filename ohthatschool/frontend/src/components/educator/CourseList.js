@@ -44,28 +44,7 @@ export class CourseList extends Component {
         );
 
         const table = (
-            this.props.courses.map(course => (
-                <div key={course.id} className="col-12 col-md-6 col-lg-4 mb-4">
-                    <div className="course-tile">
-                        <div className="course-img"/>
-                        <h5 className="course-name">{course.title}</h5>
-                        <p className="course-author">{course.owner}</p>
-                        <p className="course-description">{course.description}</p>
-                        <div className="container course-numbers">
-                            <div className="row no-gutters course-numbers-headers">
-                                <div className="col-4">Learners:</div>
-                                <div className="col-4">Rating:</div>
-                                <div className="col-4">Price:</div>
-                            </div>
-                            <div className="row no-gutters">
-                                <div className="col-4">plahol</div>
-                                <div className="col-4">plahol / 5.0</div>
-                                <div className="col-4">${course.price}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            ))
+            this.props.courses.map(course => <Link key={course.id} to={`/profile/educator/my_courses/${course.id}`}><CourseTile course={course}/></Link>)
         );
 
         return (

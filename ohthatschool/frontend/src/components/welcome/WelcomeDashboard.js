@@ -1,16 +1,19 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {getContent} from "../../actions/website";
+import {changePage, changeView} from "../../actions/website";
 
 import PieMenu from "./PieMenu";
 import PieMenuMore from "./PieMenuMore";
 
 
-export class Page extends Component {
+export class WelcomeDashboard extends Component {
 
     static propTypes = {
-        content: PropTypes.array.isRequired
+        page: PropTypes.string.isRequired,
+        view: PropTypes.string.isRequired,
+        changePage: PropTypes.func.isRequired,
+        changeView: PropTypes.func.isRequired,
     };
 
     checkProps(parent, children) {
@@ -26,25 +29,23 @@ export class Page extends Component {
     }
 
     componentDidMount() {
-        this.props.getContent()
+        this.props.changePage("welcome_page");
+        this.props.changeView("menu");
     }
 
     render() {
-        const language = this.checkProps(this.props.content[0], ["language"]);
-        const context = this.checkProps(this.props.content[0], ["context"]);
-        const page_title = this.checkProps(this.props.content[0], ["context", "page_title"]);
-
         return (
             <Fragment>
-                <PieMenu language={language} context={context} page_title={page_title}/>
-                <PieMenuMore/>
+                <PieMenu />
+                <PieMenuMore />
             </Fragment>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    content: state.website.content
+    page: state.website.page,
+    view: state.website.view,
 });
 
-export default connect(mapStateToProps, {getContent})(Page);
+export default connect(mapStateToProps, {changePage, changeView})(WelcomeDashboard);

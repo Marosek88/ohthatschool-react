@@ -1,5 +1,5 @@
 import uuid
-from django.db import models
+from django.db import models, transaction
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -11,10 +11,6 @@ Elasticsearch usage"""
 
 class ElasticModelViewSet(viewsets.ModelViewSet):
     """Parent Class for all Elasticsearch related ViewSets"""
-    # def __init__(self, es_document_class, model_class):
-    #     self.es_document_class = es_document_class
-    #     self.model_class = model_class
-    #     super().__init__(self)
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
@@ -29,26 +25,30 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = dict(request.data)
-        response = super().create(request, *args, **kwargs)
-        data['id'] = response.data['id']
-        data['owner'] = response.data['owner']
-        # Add entry to Elasticsearch
-        result = ""
-        count = 5
-        # Try to create the entry in Elasticsearch 5 times
-        while result != 'created' and count != 0:
-            try:
-                self.es_document_class.init()
-                result = self.es_document_class(**data).save()
-                break
-            except:
-                pass
-            count -= 1
-        if result == 'created':
-            return response
-        else:
-            self.model_class.objects.get(id=response.data['id']).delete()
-            return Response({"error_messages": {"elasticsearch": "Entry could not be created"}}, status=400)
+        # TODO: sort out this atomic transaction, it's not properly implemented
+        with transaction.atomic():
+            response = super().create(request, *args, **kwargs)
+            data['id'] = response.data['id']
+            if 'owner' in data.keys():
+                data['owner'] = response.data['owner']
+
+            # Add entry to Elasticsearch
+            result = ""
+            count = 5
+            # Try to create the entry in Elasticsearch 5 times
+            while result == "" and count != 0:
+                try:
+                    self.es_document_class.init()
+                    result = self.es_document_class(**data).save()
+                    break
+                except:
+                    pass
+                count -= 1
+            if result == 'created' or result == 'updated':
+                self.add_es_data([response.data])
+                return response
+
+        return Response({"error_messages": {"elasticsearch": "Entry could not be created"}}, status=400)
 
     def perform_create(self, serializer):
         return super().perform_create(serializer)
@@ -89,14 +89,17 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
             return super().destroy(request, *args, **kwargs)
         return Response({"error_messages": {"unknown": "Something went wrong"}}, status=400)
 
-    def add_es_data(self, data_list):
+    def add_es_data(self, data_list, alternative_es_document=None):
         for item in data_list:
             if 'id' in item:
                 success = False
                 # Try to connect to Elasticsearch 5 times
                 for i in range(5):
                     try:
-                        es_entry = self.es_document_class.get(id=item['id'], ignore=404)
+                        if alternative_es_document:
+                            es_entry = alternative_es_document.get(id=item['id'], ignore=404)
+                        else:
+                            es_entry = self.es_document_class.get(id=item['id'], ignore=404)
                         if es_entry:
                             for k, v in es_entry.to_dict().items():
                                 if k not in item.keys():

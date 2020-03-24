@@ -20,9 +20,6 @@ export class Alerts extends Component {
             if (error.msg.categories) {
                 alert.error("Categories: At least one category needs to be set")
             }
-            if (error.msg.detail) {
-                alert.error(`Detail: ${error.msg.detail}`)
-            }
             if (error.msg.non_field_errors) {
                 alert.error(`Login: ${error.msg.non_field_errors}`)
             }

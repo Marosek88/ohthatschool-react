@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
@@ -14,62 +14,59 @@ export class Header extends Component {
         const {isAuthenticated, user} = this.props.auth;
 
         const authLinks = (
-            <ul className="navbar-nav ml-auto">
-                <li className="nav-item mx-0 mx-lg-1">
-                    <Link to="/profile" className="nav-link py-3 px-0 px-lg-3 rounded">Profile</Link>
+            <ul className="navbar-close navbar-nav mt-2 mt-lg-0 ml-auto">
+                <li className="nav-item">
+                    <Link to="/profile" className="nav-link">Profile</Link>
                 </li>
-                <li className="nav-item mx-0 mx-lg-1">
-                    <a className="nav-link py-3 px-0 px-lg-3 rounded" onClick={this.props.logout}>Logout</a>
+                <li className="nav-item">
+                    <a className="nav-link" onClick={this.props.logout}>Logout</a>
                 </li>
             </ul>
         );
 
         const guestLinks = (
-            <ul className="navbar-nav ml-auto">
-                <li className="nav-item mx-0 mx-lg-1">
-                    <Link to="/register" className="nav-link py-3 px-0 px-lg-3 rounded">Register</Link>
+            <ul className="navbar-close navbar-nav mt-2 mt-lg-0 ml-auto">
+                <li className="nav-item">
+                    <Link to="/register" className="nav-link">Register</Link>
                 </li>
-                <li className="nav-item mx-0 mx-lg-1">
-                    <Link to="/login" className="nav-link py-3 px-0 px-lg-3 rounded">Login</Link>
+                <li className="nav-item">
+                    <Link to="/login" className="nav-link">Login</Link>
                 </li>
             </ul>
         );
 
         return (
-            <nav className="navbar navbar-expand-lg fixed-top" id="mainNav">
-                <div className="container-fluid wrapper">
-                    <a className="navbar-brand" href="#">Oh that'school</a>
-                    <button
-                        className="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold text-white rounded"
-                        type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                        Menu
-                        <i className="fas fa-bars"/>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarResponsive">
-                        <ul className="navbar-nav ml-4">
-                            <li className="nav-item mx-0 mx-lg-1">
-                                <a className="nav-link py-3 px-0 px-lg-3 rounded"
-                                   href="#">Start looking!</a>
-                            </li>
-                            {/*<li className="nav-item mx-0 mx-lg-1">*/}
-                            {/*    <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'educators' %} active{% endif %}"*/}
-                            {/*       href="#">Educators</a>*/}
-                            {/*</li>*/}
-                            {/*<li className="nav-item mx-0 mx-lg-1">*/}
-                            {/*    <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'schools' %} active{% endif %}"*/}
-                            {/*       href="#">Schools</a>*/}
-                            {/*</li>*/}
-                            {/*<li className="nav-item mx-0 mx-lg-1">*/}
-                            {/*    <a className="nav-link py-3 px-0 px-lg-3 rounded{% if current_url == 'students' %} active{% endif %}"*/}
-                            {/*       href="#">Students</a>*/}
-                            {/*</li>*/}
-                        </ul>
-                        {isAuthenticated ? authLinks : guestLinks}
+            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                <Link to="/" className="navbar-close navbar-brand" href="#">Oh that'school</Link>
+                <button className="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"/>
+                </button>
 
+                <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+                    <div className="btn-group my-2 my-lg-0 mr-sm-2 ml-lg-5">
+                        <button type="button" className="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            <i className="fas fa-th"/> Categories
+                        </button>
+                        <div className="dropdown-menu">
+                            <a className="navbar-close dropdown-item" href="#">Action</a>
+                            <a className="navbar-close dropdown-item" href="#">Another action</a>
+                            <a className="navbar-close dropdown-item" href="#">Something else here</a>
+                            <div className="dropdown-divider"/>
+                            <a className="navbar-close dropdown-item" href="#">Separated link</a>
+                        </div>
                     </div>
+                    <form className="form-inline my-2 my-lg-0">
+                        <input className="form-control mr-sm-2" type="search" placeholder="Search"/>
+                        <button className="navbar-close btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+
+                    {isAuthenticated ? authLinks : guestLinks}
                 </div>
             </nav>
+
         );
     }
 }

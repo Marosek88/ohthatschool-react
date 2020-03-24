@@ -35,17 +35,17 @@ export class MoreStudent extends Component {
                                 <div className="col-lg-3">
                                     <div className="features-icons-item mx-auto mb-0 mb-lg-3">
                                         <div className="features-icons-icon d-flex">
-                                            <i className="icon-compass m-auto text-primary"></i>
+                                            <i className="icon-compass m-auto text-primary"/>
                                         </div>
                                         <h3>Availability</h3>
-                                        <p className="lead mb-0">Access your books and assignemnts anywhere you the
+                                        <p className="lead mb-0">Access your books and assignments anywhere you the
                                             Internet dares to reach</p>
                                     </div>
                                 </div>
                                 <div className="col-lg-3">
                                     <div className="features-icons-item mx-auto mb-0 mb-lg-3">
                                         <div className="features-icons-icon d-flex">
-                                            <i className="icon-rocket m-auto text-primary"></i>
+                                            <i className="icon-rocket m-auto text-primary"/>
                                         </div>
                                         <h3>Fun</h3>
                                         <p className="lead mb-0">Study with use of interactive games, challenging quizes
@@ -60,7 +60,8 @@ export class MoreStudent extends Component {
                     <section className="showcase">
                         <div className="container-fluid wrapper-bg py-4">
                             <div className="row no-gutters">
-                                <div className="col-lg-6 order-lg-2 text-white showcase-img"/>
+                                <div className="col-lg-6 order-lg-2 text-white showcase-img"
+                                     style={{background: "url('../../../static/img/bg-cloud.jpg') no-repeat center center"}}/>
                                 <div className="col-lg-6 order-lg-1 my-auto showcase-text">
                                     <h2>Connect and keep in touch</h2>
                                     <p className="lead mb-0">Find new inspiring educators and keep in touch with them
@@ -69,7 +70,8 @@ export class MoreStudent extends Component {
                                 </div>
                             </div>
                             <div className="row no-gutters">
-                                <div className="col-lg-6 text-white showcase-img"/>
+                                <div className="col-lg-6 text-white showcase-img"
+                                     style={{background: "url('../../../static/img/bg-studying.jpg') no-repeat center center"}}/>
                                 <div className="col-lg-6 my-auto showcase-text">
                                     <h2>Do your cramming at your own pace</h2>
                                     <p className="lead mb-0">The world wasn't built in one day. Do your studying at
@@ -78,7 +80,8 @@ export class MoreStudent extends Component {
                                 </div>
                             </div>
                             <div className="row no-gutters">
-                                <div className="col-lg-6 order-lg-2 text-white showcase-img"/>
+                                <div className="col-lg-6 order-lg-2 text-white showcase-img"
+                                     style={{background: "url('../../../static/img/bg-tutoring.jpg') no-repeat center center"}}/>
                                 <div className="col-lg-6 order-lg-1 my-auto showcase-text">
                                     <h2>Meet your local educator</h2>
                                     <p className="lead mb-0">If you choose to work with a local tutor, you can arrange
@@ -86,7 +89,8 @@ export class MoreStudent extends Component {
                                 </div>
                             </div>
                             <div className="row no-gutters">
-                                <div className="col-lg-6 text-white showcase-img"/>
+                                <div className="col-lg-6 text-white showcase-img"
+                                     style={{background: "url('../../../static/img/bg-portfolio.jpg') no-repeat center center"}}/>
                                 <div className="col-lg-6 my-auto showcase-text">
                                     <h2>Build your portfolio</h2>
                                     <p className="lead mb-0">Keep all of your homework and assignments in one place -

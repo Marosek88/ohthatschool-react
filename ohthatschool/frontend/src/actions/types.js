@@ -1,5 +1,9 @@
-// Welcome Page
+// Website
 export const GET_CONTENT = "GET_CONTENT";
+export const GET_IDS = "GET_IDS";
+export const CHANGE_PAGE = "CHANGE_PAGE";
+export const CHANGE_VIEW = "CHANGE_VIEW";
+export const CHANGE_SUB_VIEW = "CHANGE_SUB_VIEW";
 
 // Auth
 export const USER_LOADED = "USER_LOADED";
@@ -10,6 +14,9 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+
+// Profile
+export const PICTURE_UPLOADED = "PICTURE_UPLOADED";
 
 // Message alerts
 export const RETURN_ERRORS = "RETURN_ERRORS";
@@ -22,8 +29,20 @@ export const GET_COURSES = "GET_COURSES";
 export const GET_SEARCH_BAR_INFO = "GET_SEARCH_BAR_INFO";
 
 // Educator Page
+export const GET_EDUCATOR = "GET_EDUCATOR";
+export const CREATE_EDUCATOR = "CREATE_EDUCATOR";
 export const GET_EDUCATOR_COURSES = "GET_COURSES";
 export const GET_ADD_COURSE_FORM_DATA = "GET_ADD_COURSE_FORM_DATA";
 export const CREATE_COURSE = "CREATE_COURSE";
-export const EDU_DEFAULT_VIEW = "EDU_DEFAULT_VIEW";
-export const EDU_CHANGE_VIEW = "EDU_CHANGE_VIEW";
+export const GET_ED_DETAILS = "GET_ED_DETAILS";
+export const RESET_ED_DETAILS = "RESET_ED_DETAILS";
+export const GET_ED_LIST_ITEMS = "GET_ED_LIST_ITEMS";
+export const CREATE_ED_ITEM = "CREATE_ED_ITEM";
+
+export const GET_COURSE_DETAILS = "GET_COURSE_DETAILS";
+export const GET_COURSE_MODULES = "GET_COURSE_MODULES";
+export const CREATE_MODULE = "CREATE_MODULE";
+export const GET_MODULE_DETAILS = "GET_MODULE_DETAILS";
+export const GET_MODULE_LESSONS = "GET_MODULE_LESSONS";
+export const CREATE_LESSON = "CREATE_LESSON";
+export const GET_LESSON_DETAILS = "GET_LESSON_DETAILS";

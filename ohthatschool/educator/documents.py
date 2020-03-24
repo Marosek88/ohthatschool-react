@@ -12,12 +12,15 @@ html_strip = analyzer('html_strip',
 class EducatorDocument(Document):
     """Educator information"""
     id = Keyword()
+    categories = Keyword()
     contributing_to_courses = Keyword()
     achievements = Keyword()
-    short_bio = Text()
-    long_bio = Text()
     rating = ScaledFloat(scaling_factor=100)
     active = Boolean()
+    show_in_listings = Boolean()
+    local_connect = Boolean()
+    online_connect = Boolean()
+    short_bio = Text(required=False)
 
     created_at = Date()
     updated_at = Date()
@@ -31,29 +34,6 @@ class EducatorDocument(Document):
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
         self.active = True
-        return super().save(**kwargs)
-
-    def update(self, **kwargs):
-        return super().update(updated_at=datetime.now(), **kwargs)
-
-
-class EducatorSettingsDocument(Document):
-    """Educator Settings information"""
-    id = Keyword()
-    show_in_listings = Boolean()
-    local_connect = Boolean()
-
-    created_at = Date()
-    updated_at = Date()
-
-    class Index:
-        name = 'educator_settings'
-
-    def save(self, **kwargs):
-        self.meta.id = self.id
-        del self.id
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
         return super().save(**kwargs)
 
     def update(self, **kwargs):

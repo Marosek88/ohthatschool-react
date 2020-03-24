@@ -2,14 +2,14 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from elasticsearch_dsl import Q
 
-from .models import Educator, EducatorSettings
-from .serializers import EducatorSerializer, EducatorSettingsSerializer
-from .documents import EducatorDocument, EducatorSettingsDocument
+from .models import Educator
+from .serializers import EducatorSerializer
+from .documents import EducatorDocument
 
 from misc.classes import ElasticModelViewSet
 
 
-# ------------------------------------------------- CATEGORY -------------------------------------------------
+# ------------------------------------------------- EDUCATOR -------------------------------------------------
 class EducatorViewSet(ElasticModelViewSet):
     """Educator viewset"""
     queryset = Educator.objects.all()
@@ -21,13 +21,19 @@ class EducatorViewSet(ElasticModelViewSet):
     model_class = Educator
 
 
-# ------------------------------------------------- COURSE -------------------------------------------------
-class EducatorSettingsViewSet(ElasticModelViewSet):
-    """Course viewset"""
-    queryset = EducatorSettings.objects.all()
+# ------------------------------------------------- EDUCATOR USER -------------------------------------------------
+class EducatorUserViewSet(ElasticModelViewSet):
+    """Educator User viewset"""
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
-    serializer_class = EducatorSettingsSerializer
-    es_document_class = EducatorSettingsDocument
-    model_class = EducatorSettings
+    serializer_class = EducatorSerializer
+    es_document_class = EducatorDocument
+    model_class = Educator
+
+    def get_queryset(self):
+        result = Educator.objects.filter(id=self.request.user.id)
+        return result
+
+    def perform_create(self, serializer):
+        serializer.save(id=self.request.user)

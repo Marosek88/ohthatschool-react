@@ -8,7 +8,8 @@ import {returnWarnings, returnSuccess} from '../../actions/messages';
 
 export class Register extends Component {
     state = {
-        username: '',
+        first_name: '',
+        last_name: '',
         email: '',
         password: '',
         password2: ''
@@ -23,21 +24,36 @@ export class Register extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        const {username, email, password, password2} = this.state;
-        if (password !== password2) {
+        const {first_name, last_name, email, password, password2} = this.state;
+        if (first_name === "") {
+            this.props.returnWarnings({
+                noFirstName: 'First Name is required'
+            });
+        }
+        else if (last_name === "") {
+            this.props.returnWarnings({
+                noLastName: 'Last Name is required'
+            })
+        }
+        else if (email === "") {
+            this.props.returnWarnings({
+                noEmail: 'Email address is required'
+            })
+        }
+        else if (password !== password2) {
             this.props.returnWarnings({
                 passwordsNotMatch: 'Passwords do not match'
             });
         } else {
             const newUser = {
-                username,
+                first_name,
+                last_name,
                 password,
                 email
             };
+            console.log(newUser);
             this.props.register(newUser);
-            this.props.returnSuccess({
-                registerSuccessful: `Welcome, ${username}! you are now registered`
-            })
+            this.props.returnSuccess(`Welcome, ${first_name}! you are now registered`, 201)
         }
     };
 
@@ -49,7 +65,7 @@ export class Register extends Component {
             return <Redirect to="/"/>
         }
 
-        const {username, email, password, password2} = this.state;
+        const {first_name, last_name, email, password, password2} = this.state;
 
         return (
             <div className="col-md-6 m-auto">
@@ -57,13 +73,23 @@ export class Register extends Component {
                     <h2 className="text-center">Register</h2>
                     <form onSubmit={this.onSubmit}>
                         <div className="form-group">
-                            <label>Username</label>
+                            <label>First Name</label>
                             <input
                                 type="text"
                                 className="form-control"
-                                name="username"
+                                name="first_name"
                                 onChange={this.onChange}
-                                value={username}
+                                value={first_name}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Last Name</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="last_name"
+                                onChange={this.onChange}
+                                value={last_name}
                             />
                         </div>
                         <div className="form-group">

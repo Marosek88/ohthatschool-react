@@ -1,18 +1,14 @@
 from rest_framework import serializers
-from .models import Educator, EducatorSettings
+from .models import Educator
 
-from course.serializers import CourseSerializer
+from course.serializers import CourseSerializer, CategorySerializer
 
 
 class EducatorSerializer(serializers.ModelSerializer):
     """Educator model serializer."""
+    contributing_to_courses = CourseSerializer(required=False, many=True)
+    categories = CategorySerializer(required=False, many=True)
+
     class Meta:
         model = Educator
-        fields = '__all__'
-
-
-class EducatorSettingsSerializer(serializers.ModelSerializer):
-    """Educator Settings model serializer."""
-    class Meta:
-        model = EducatorSettings
         fields = '__all__'

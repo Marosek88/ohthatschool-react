@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import PieMenu from "./PieMenu";
+import OptionsMenu from "./OptionsMenu";
 
 
 export class ProfileDashboard extends Component {
@@ -9,7 +9,7 @@ export class ProfileDashboard extends Component {
 
         return (
             <Fragment>
-                <PieMenu/>
+                <OptionsMenu/>
             </Fragment>
         )
     }
