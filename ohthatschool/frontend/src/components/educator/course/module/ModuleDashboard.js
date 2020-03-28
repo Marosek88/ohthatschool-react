@@ -3,12 +3,12 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {getIds, changePage, changeView} from "../../../../actions/website";
-import {createItem} from "../../../../actions/educator";
+import {createItem, getDetails, resetDetails, getList, resetListItems} from "../../../../actions/educator";
 
-import ComponentDetails from "../../ComponentDetails";
-import ComponentList from "../../ComponentList";
 import BubbleMenuComponent, {button_types} from "../../../common/BubbleMenuComponent";
 import AddItemComponent from "../../../common/AddItemComponent";
+import DetailsComponent from "../../../common/DetailsComponent";
+import ListComponent from "../../../common/ListComponent";
 
 export class ModuleDashboard extends Component {
 
@@ -17,6 +17,10 @@ export class ModuleDashboard extends Component {
         view: PropTypes.string.isRequired,
         getIds: PropTypes.func.isRequired,
         createItem: PropTypes.func.isRequired,
+        getDetails: PropTypes.func.isRequired,
+        getList: PropTypes.func.isRequired,
+        resetDetails: PropTypes.func.isRequired,
+        resetListItems: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
@@ -25,28 +29,58 @@ export class ModuleDashboard extends Component {
         this.props.changeView("module_details");
     }
 
+    componentWillUnmount() {
+        this.props.changePage("");
+        this.props.changeView("");
+        this.props.resetDetails();
+        this.props.resetListItems();
+    }
+
     render() {
         // Details Component
-        const prop_list = [
-            {label: "ID", properties: ["id"]},
-            {label: "Course", properties: ["course", "title"]},
-            {label: "Title", properties: ["title"]},
-            {label: "Description", properties: ["description"]},
-            {label: "Duration", properties: ["duration"]},
-            {label: "Created at", properties: ["created_at"]},
-        ];
+        const details_context = {
+            getDetails: this.props.getDetails,
+            get_what: "Module",
+            get_id: this.props.ids.module,
+            details_prop_list: [
+                {label: "Course", properties: ["course", "title"]},
+                {label: "Title", properties: ["title"]},
+                {label: "Description", properties: ["description"]},
+                {label: "Duration", properties: ["duration"]},
+                {label: "Created at", properties: ["created_at"]},
+            ],
+        };
 
         // List Component
         const link_to = `/profile/educator/my_courses/${this.props.ids.my_course}/module/${this.props.ids.module}/lesson/`;
+        const list_context = {
+            getList: this.props.getList,
+            get_what: "Module Lessons",
+            get_id: this.props.ids.module,
+            link_to: link_to,
+            list_prop_list: [
+                {label: "Title", properties: ["title"]},
+                {label: "Description", properties: ["description"]},
+                {label: "Active", properties: ["active"], boolean: true},
+            ],
+
+        };
 
         // Add item component
-        const field_list = [
-            {field_type: "invisible", label: "", name: "module", start_value: this.props.ids.module},
-            {field_type: "text", label: "Title", name: "title", start_value: ""},
-            {field_type: "textarea", label: "Description", name: "description", start_value: ""},
-            {field_type: "text", label: "Duration", name: "duration", start_value: "0"},
-            {field_type: "checkbox", label: "Active", name: "active", start_value: false},
-        ];
+        const form_context = {
+            getFormContext: null,
+            createItem: this.props.createItem,
+            add_what: "Lesson",
+            field_list: [
+                {field_type: "invisible", label: "", name: "module", start_value: this.props.ids.module},
+                {field_type: "image", label: "Lesson Image", name: "image"},
+                {field_type: "text", label: "Title", name: "title", start_value: ""},
+                {field_type: "textarea", label: "Description", name: "description", start_value: ""},
+                {field_type: "text", label: "Duration", name: "duration", start_value: "0"},
+                {field_type: "checkbox", label: "Active", name: "active", start_value: false},
+            ],
+            addContextToForm: null,
+        };
 
         // Prepare BubbleMenu data
         const button_list = [
@@ -74,25 +108,17 @@ export class ModuleDashboard extends Component {
                 <div className="container wrapper">
                     {this.props.ids.module && this.props.view === "module_details" ?
                         <Fragment>
-                            <ComponentDetails get_what="Module"
-                                              get_id={this.props.ids.module}
-                                              get_properties_list={prop_list}
-                            />
-                            <ComponentList get_what="Module Lessons"
-                                           get_id={this.props.ids.module}
-                                           link_to={link_to}
-                            />
+                            <DetailsComponent details_context={details_context}/>
+                            <ListComponent list_context={list_context}/>
                         </Fragment>
                         : null}
 
                     {this.props.ids.module && this.props.view === "add_lesson" ?
-                        <AddItemComponent add_function={this.props.createItem}
-                                          add_what="Lesson"
-                                          field_list={field_list}
+                        <AddItemComponent form_context={form_context}
                         />
                         : null}
                 </div>
-                <BubbleMenuComponent button_list={button_list} />
+                <BubbleMenuComponent button_list={button_list}/>
             </Fragment>
         )
     }
@@ -103,4 +129,13 @@ const mapStateToProps = state => ({
     view: state.website.view,
 });
 
-export default connect(mapStateToProps, {getIds, changePage, changeView, createItem})(ModuleDashboard);
+export default connect(mapStateToProps, {
+    getIds,
+    changePage,
+    changeView,
+    createItem,
+    getDetails,
+    resetDetails,
+    getList,
+    resetListItems
+})(ModuleDashboard);

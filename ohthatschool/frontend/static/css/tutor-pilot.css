@@ -38,12 +38,12 @@ h6 {
 
 .content {
     width: 100%;
-    min-height: 68vh;
+    min-height: 66vh;
 }
 
 @media (min-width: 992px) {
     .content {
-        min-height: 72vh;
+        min-height: 76vh;
     }
 }
 
@@ -190,12 +190,12 @@ header.masthead {
 
 header.masthead .overlay {
     position: absolute;
-    background-color: #212529;
+    background-color: #aaa;
     height: 100%;
     width: 100%;
     top: 0;
     left: 0;
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 header.masthead h1 {
@@ -283,12 +283,12 @@ header.masthead h1 {
 
 .call-to-action .overlay {
     position: absolute;
-    background-color: #212529;
+    background-color: #aaa;
     height: 100%;
     width: 100%;
     top: 0;
     left: 0;
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 footer.footer {
@@ -366,26 +366,29 @@ footer.footer {
 .tile-img {
     width: 270px;
     height: 270px;
-    background: url("../img/bg-masthead.jpg") no-repeat center center;
+    background: no-repeat center center;
     background-size: cover;
     margin-bottom: 10px;
 }
 
 .tile-name {
     font-weight: 700;
-    height: 50px;
+    margin-bottom: 0.5rem;
 }
 
 .tile-additional {
     color: #aaa;
-    height: 25px;
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;
 }
 
 .tile-description {
     font-size: 0.9rem;
-    height: 70px;
-    margin-bottom: 10px;
+    height: 6rem;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    -moz-box-shadow: inset 0 -1rem 1rem -1rem #aaa;
+    -webkit-box-shadow: inset 0 -1rem 1rem -1rem #aaa;
+    box-shadow: inset 0 -1rem 1rem -1rem #aaa;
 }
 
 .tile-footer {
@@ -405,16 +408,17 @@ footer.footer {
     background: no-repeat center center;
     background-size: cover;
     padding-bottom: 4rem;
+    min-height: 76vh;
 }
 
 .index .overlay {
     position: absolute;
-    background-color: #212529;
+    background-color: #aaa;
     height: 100%;
     width: 100%;
     top: 0;
     left: 0;
-    opacity: 0.2;
+    opacity: 0.5;
 }
 
 .index-header {
@@ -571,7 +575,7 @@ footer.footer {
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     cursor: pointer;
     background-color: #007bff;
     z-index: 100;
@@ -583,7 +587,7 @@ footer.footer {
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 50%;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     margin-left: 0.25rem;
     cursor: pointer;
     background-color: #3f3f3f;
@@ -621,13 +625,13 @@ footer.footer {
     .bubble-menu-item {
         width: 3.5rem;
         height: 3.5rem;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
     }
 
     .bubble-menu-subitem {
         width: 2.5rem;
         height: 2.5rem;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
     }
 
     .bubble-menu-text {
@@ -722,7 +726,7 @@ footer.footer {
     text-align: left;
 }
 
-@media(max-width: 575.5px) {
+@media (max-width: 575.5px) {
     .profile-details {
         text-align: center;
     }

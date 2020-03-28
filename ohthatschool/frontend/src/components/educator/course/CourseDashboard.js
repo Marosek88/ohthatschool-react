@@ -3,12 +3,12 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {getIds, changePage, changeView} from "../../../actions/website";
-import {createItem} from "../../../actions/educator";
+import {createItem, getDetails, resetDetails, getList, resetListItems} from "../../../actions/educator";
 
-import ComponentDetails from "../ComponentDetails";
-import ComponentList from "../ComponentList";
+import DetailsComponent from "../../common/DetailsComponent";
 import AddItemComponent from "../../common/AddItemComponent";
 import BubbleMenuComponent, {button_types} from "../../common/BubbleMenuComponent";
+import ListComponent from "../../common/ListComponent";
 
 
 export class CourseDashboard extends Component {
@@ -19,6 +19,10 @@ export class CourseDashboard extends Component {
         changeView: PropTypes.func.isRequired,
         getIds: PropTypes.func.isRequired,
         createItem: PropTypes.func.isRequired,
+        getDetails: PropTypes.func.isRequired,
+        getList: PropTypes.func.isRequired,
+        resetDetails: PropTypes.func.isRequired,
+        resetListItems: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
@@ -30,33 +34,58 @@ export class CourseDashboard extends Component {
     componentWillUnmount() {
         this.props.changePage("");
         this.props.changeView("");
+        this.props.resetDetails();
+        this.props.resetListItems();
     }
 
     render() {
         // Details component
-        const prop_list = [
-            {label: "ID", properties: ["id"]},
-            {label: "Owner", properties: ["owner", "username"]},
-            {label: "Title", properties: ["title"]},
-            {label: "Category", properties: [""]},
-            {label: "Description", properties: ["description"]},
-            {label: "Duration", properties: ["duration"]},
-            {label: "Price", properties: ["price"]},
-            {label: "Created at", properties: ["created_at"]},
-        ];
+        const details_context = {
+            getDetails: this.props.getDetails,
+            resetDetails: this.props.resetDetails,
+            get_what: "Course",
+            get_id: this.props.ids.my_course,
+            details_prop_list: [
+                {label: "Title", properties: ["title"]},
+                {label: "Category", properties: [""]},
+                {label: "Description", properties: ["description"]},
+                {label: "Duration", properties: ["duration"]},
+                {label: "Price", properties: ["price"]},
+                {label: "Created at", properties: ["created_at"]},
+            ],
+        };
 
         // List component
         const link_to = `/profile/educator/my_courses/${this.props.ids.my_course}/module/`;
+        const list_context = {
+            getList: this.props.getList,
+            get_what: "Course Modules",
+            get_id: this.props.ids.my_course,
+            link_to: link_to,
+            list_prop_list: [
+                {label: "Title", properties: ["title"]},
+                {label: "Description", properties: ["description"]},
+                {label: "Active", properties: ["active"], boolean: true},
+            ],
 
-        // Add item component
-        const field_list = [
-            {field_type: "invisible", label: "", name: "course", start_value: this.props.ids.my_course},
-            {field_type: "text", label: "Title", name: "title", start_value: ""},
-            {field_type: "textarea", label: "Description", name: "description", start_value: ""},
-            {field_type: "checkbox", label: "Active", name: "active", start_value: false},
-        ];
+        };
 
-        // Prepare BubbleMenu data
+        // Form component
+        const form_context = {
+            getFormContext: null,
+            createItem: this.props.createItem,
+            add_what: "Module",
+            field_list: [
+                {field_type: "invisible", label: "", name: "course", start_value: this.props.ids.my_course},
+                {field_type: "image", label: "Module Image", name: "image"},
+                {field_type: "text", label: "Title", name: "title", start_value: ""},
+                {field_type: "textarea", label: "Description", name: "description", start_value: ""},
+                {field_type: "checkbox", label: "Active", name: "active", start_value: false},
+            ],
+            addContextToForm: null,
+        };
+
+        // BubbleMenu data
         const button_list = [
             {
                 name: "go_back",
@@ -82,21 +111,13 @@ export class CourseDashboard extends Component {
                 <div className="container wrapper">
                     {this.props.ids.my_course && this.props.view === "course_details" ?
                         <Fragment>
-                            <ComponentDetails get_what="Course"
-                                              get_id={this.props.ids.my_course}
-                                              get_properties_list={prop_list}
-                            />
-                            <ComponentList get_what="Course Modules"
-                                           get_id={this.props.ids.my_course}
-                                           link_to={link_to}
-                            />
+                            <DetailsComponent details_context={details_context} />
+                            <ListComponent list_context={list_context} />
                         </Fragment>
                         : null}
 
                     {this.props.ids.my_course && this.props.view === "add_module" ?
-                        <AddItemComponent add_function={this.props.createItem}
-                                          add_what="Module"
-                                          field_list={field_list}
+                        <AddItemComponent form_context={form_context}
                         />
                         : null}
                     <BubbleMenuComponent button_list={button_list}/>
@@ -112,4 +133,13 @@ const mapStateToProps = state => ({
     view: state.website.view,
 });
 
-export default connect(mapStateToProps, {getIds, changePage, changeView, createItem})(CourseDashboard);
+export default connect(mapStateToProps, {
+    getIds,
+    changePage,
+    changeView,
+    createItem,
+    getDetails,
+    resetDetails,
+    getList,
+    resetListItems
+})(CourseDashboard);

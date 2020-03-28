@@ -24,31 +24,25 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
         pass
 
     def create(self, request, *args, **kwargs):
-        data = dict(request.data)
+        data = request.data.dict()
         # TODO: sort out this atomic transaction, it's not properly implemented
         with transaction.atomic():
             response = super().create(request, *args, **kwargs)
             data['id'] = response.data['id']
             if 'owner' in data.keys():
                 data['owner'] = response.data['owner']
+            if 'image' in data.keys():
+                data['image'] = response.data['image']
 
             # Add entry to Elasticsearch
-            result = ""
-            count = 5
-            # Try to create the entry in Elasticsearch 5 times
-            while result == "" and count != 0:
-                try:
-                    self.es_document_class.init()
-                    result = self.es_document_class(**data).save()
-                    break
-                except:
-                    pass
-                count -= 1
-            if result == 'created' or result == 'updated':
-                self.add_es_data([response.data])
-                return response
+            self.es_document_class.init()
+            result = self.es_document_class(**data).save()
 
-        return Response({"error_messages": {"elasticsearch": "Entry could not be created"}}, status=400)
+            self.add_es_data([response.data])
+            return response
+        #
+        #
+        # return Response({"error_messages": {"elasticsearch": "Entry could not be created"}}, status=400)
 
     def perform_create(self, serializer):
         return super().perform_create(serializer)

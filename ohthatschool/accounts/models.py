@@ -9,7 +9,7 @@ class UserProfile(models.Model):
     active = models.BooleanField(default=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    picture = models.ImageField(null=True, upload_to='profile_pictures')
+    image = models.ImageField(null=True, upload_to='profile_pictures')
 
     def __str__(self):
         return f'User Profile: {self.id.username}'

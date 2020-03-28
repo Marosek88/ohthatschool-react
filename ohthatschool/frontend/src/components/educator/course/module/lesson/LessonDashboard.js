@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {getIds, changePage, changeView} from "../../../../../actions/website";
+import {getDetails, resetDetails, getList, resetListItems} from "../../../../../actions/educator";
 
-import ComponentDetails from "../../../ComponentDetails";
+import DetailsComponent from "../../../../common/DetailsComponent";
 import BubbleMenuComponent, {button_types} from "../../../../common/BubbleMenuComponent";
 
 export class LessonDashboard extends Component {
@@ -21,16 +22,27 @@ export class LessonDashboard extends Component {
         this.props.changeView("lesson_details");
     }
 
+    componentWillUnmount() {
+        this.props.changePage("");
+        this.props.changeView("");
+        this.props.resetDetails();
+        this.props.resetListItems();
+    }
+
     render() {
         // Details Component
-        const prop_list = [
-            {label: "ID", properties: ["id"]},
+        const details_context = {
+            getDetails: this.props.getDetails,
+            get_what: "Lesson",
+            get_id: this.props.ids.lesson,
+            details_prop_list: [
             {label: "Module", properties: ["module", "title"]},
             {label: "Title", properties: ["title"]},
             {label: "Description", properties: ["description"]},
             {label: "Duration", properties: ["duration"]},
             {label: "Created at", properties: ["created_at"]},
-        ];
+        ],
+        };
 
         // Prepare BubbleMenu data
         const button_list = [
@@ -52,10 +64,7 @@ export class LessonDashboard extends Component {
                 <div className="container wrapper">
                     {this.props.ids.lesson && this.props.view === "lesson_details" ?
                         <Fragment>
-                            <ComponentDetails get_what="Lesson"
-                                              get_id={this.props.ids.lesson}
-                                              get_properties_list={prop_list}
-                            />
+                            <DetailsComponent details_context={details_context}/>
                         </Fragment>
                         : null}
 
@@ -71,4 +80,12 @@ const mapStateToProps = state => ({
     view: state.website.view,
 });
 
-export default connect(mapStateToProps, {getIds, changePage, changeView})(LessonDashboard);
+export default connect(mapStateToProps, {
+    getIds,
+    changePage,
+    changeView,
+    getDetails,
+    resetDetails,
+    getList,
+    resetListItems,
+})(LessonDashboard);

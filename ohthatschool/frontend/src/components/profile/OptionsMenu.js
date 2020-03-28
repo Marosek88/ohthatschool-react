@@ -20,14 +20,14 @@ export class OptionsMenu extends Component {
         }
 
         return (
-            <header className="index">
+            <header className="index" style={{backgroundImage: "url('static/img/bg-profile-img.jpg')"}}>
                 <div className="overlay"/>
-                <div className="index-header">
+                <div className="index-header mt-3 mt-md-5">
                     <p className="my-5">
                         <span>Choose action</span>
                     </p>
                 </div>
-                <div className="container wrapper">
+                <div className="container wrapper mt-2 mt-md-5">
                     <div className="row row-center">
 
                         <div className="col-6 col-lg-2 text-center mx-auto my-3">
@@ -51,29 +51,35 @@ export class OptionsMenu extends Component {
                         </div>
 
                         <div className="col-6 col-lg-2 text-center mx-auto my-3">
-                            <div className="round-item">
-                                <div className="round-item-text">
-                                    <i className="fas fa-user-graduate"/>
+                            <Link to="/profile/student">
+                                <div className="round-item">
+                                    <div className="round-item-text">
+                                        <i className="fas fa-user-graduate"/>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
 
                         <div className="col-6 col-lg-2 text-center mx-auto my-3">
-                            <div className="round-item">
-                                <div className="round-item-text">
-                                    <i className="fas fa-female"/><i className="fas fa-child"
-                                                                     style={{fontSize: "50%"}}/><i
-                                    className="fas fa-male"/>
+                            <Link to="/profile/parent">
+                                <div className="round-item">
+                                    <div className="round-item-text">
+                                        <i className="fas fa-female"/>
+                                        <i className="fas fa-child" style={{fontSize: "50%"}}/>
+                                        <i className="fas fa-male"/>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
 
                         <div className="col-6 col-lg-2 text-center mx-auto my-3">
-                            <div className="round-item">
-                                <div className="round-item-text">
-                                    <i className="fas fa-school"/>
+                            <Link to="/profile/school">
+                                <div className="round-item">
+                                    <div className="round-item-text">
+                                        <i className="fas fa-school"/>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                     </div>
                 </div>

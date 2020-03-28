@@ -1,4 +1,6 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import Select from 'react-select'
 
 
@@ -6,12 +8,24 @@ export class AddItemComponent extends Component {
     constructor(props) {
         super(props);
         let form_data = {};
-        props.field_list.map(field => form_data[field.name] = field.start_value);
+        props.form_context.field_list.map(field => form_data[field.name] = field.start_value);
         this.state = {
-            form_data: form_data
+            form_data: form_data,
+            field_list: [],
         };
 
         this.handleMultiChange = this.handleMultiChange.bind(this);
+    }
+
+    static propTypes = {
+        formContext: PropTypes.array.isRequired,
+        formLoading: PropTypes.bool.isRequired,
+    };
+
+    componentDidMount() {
+        if (this.props.form_context.getFormContext) {
+            this.props.form_context.getFormContext(this.props.form_context.add_what)
+        }
     }
 
     onChange = e => this.setState({
@@ -31,19 +45,32 @@ export class AddItemComponent extends Component {
                 }
             };
         });
-    }
+    };
 
-    prepareForm = (form, form_data) => {
+    handleImageChange = (e) => {
+        this.setState({
+            image: e.target.files[0]
+        })
+    };
+
+    prepareForm = (form, form_data, field_list) => {
         Object.keys(form_data).map(key => {
             let is_select = false;
-            this.props.field_list.map(field => {
+            let is_image = false;
+            this.state.field_list.map(field => {
                 if (field.name === key && field.field_type === "select") {
                     is_select = true;
+                } else if (field.name === key && field.field_type === "image") {
+                    is_image = true;
                 }
             });
 
             if (is_select) {
                 form.append(key, form_data[key]["value"])
+            } else if (is_image) {
+                if (this.state[key]) {
+                    form.append(key, this.state[key], this.state[key]["name"]);
+                }
             } else {
                 form.append(key, form_data[key])
             }
@@ -54,10 +81,17 @@ export class AddItemComponent extends Component {
         e.preventDefault();
         let form = new FormData();
         this.prepareForm(form, this.state.form_data);
-        this.props.add_function(this.props.add_what, form);
+        this.props.form_context.createItem(this.props.form_context.add_what, form);
     };
 
     render() {
+
+
+        this.state.field_list = this.props.form_context.field_list;
+        if (this.props.form_context.addContextToForm) {
+            this.props.form_context.addContextToForm(this.props.formContext, this.state.field_list);
+        }
+
         const render_field = (field) => {
             if (field.field_type === "text") {
                 return (
@@ -110,12 +144,26 @@ export class AddItemComponent extends Component {
                         />
                     </div>
                 )
+            } else if (field.field_type === "image") {
+                return (
+                    <div className="form-group" key={field.name}>
+                        <label>{field.label}</label>
+                        <input
+                            className="form-control"
+                            type="file"
+                            accept="image/png, image/jpeg"
+                            onChange={this.handleImageChange}
+                            name={field.name}
+                            value={this.state.form_data[field.name]}
+                        />
+                    </div>
+                )
             }
         };
 
         const render_form = (
-            <form onSubmit={this.onSubmit}>
-                {this.props.field_list.map(field => (
+            <form onSubmit={this.onSubmit} encType="multipart/form-data">
+                {this.state.field_list.map(field => (
                     render_field(field)
                 ))}
                 <div className="form-group">
@@ -128,11 +176,16 @@ export class AddItemComponent extends Component {
 
         return (
             <div className="card card-body mt-4 mb-4">
-                <h2>Add {this.props.add_what}</h2>
+                <h2>Add {this.props.form_context.add_what}</h2>
                 {render_form}
             </div>
         );
     }
 }
 
-export default AddItemComponent;
+const mapStateToProps = state => ({
+    formContext: state.common.formContext,
+    formLoading: state.common.formLoading,
+});
+
+export default connect(mapStateToProps)(AddItemComponent);

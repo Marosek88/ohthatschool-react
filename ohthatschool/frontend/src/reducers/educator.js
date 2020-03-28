@@ -2,7 +2,6 @@ import {
     GET_EDUCATOR,
     CREATE_EDUCATOR,
     GET_EDUCATOR_COURSES,
-    GET_ADD_COURSE_FORM_DATA,
     GET_ED_DETAILS,
     RESET_ED_DETAILS,
     GET_ED_LIST_ITEMS,
@@ -43,11 +42,6 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 courses: action.payload
-            };
-        case GET_ADD_COURSE_FORM_DATA:
-            return {
-                ...state,
-                formInfo: action.payload
             };
         case GET_ED_DETAILS:
             return {

@@ -51,7 +51,6 @@ export class Register extends Component {
                 password,
                 email
             };
-            console.log(newUser);
             this.props.register(newUser);
             this.props.returnSuccess(`Welcome, ${first_name}! you are now registered`, 201)
         }

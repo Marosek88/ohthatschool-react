@@ -27,7 +27,6 @@ import WelcomeDashboard from "./welcome/WelcomeDashboard";
 import ProfileDashboard from "./profile/ProfileDashboard";
 import SettingsDashboard from "./profile/settings/SettingsDashboard";
 import EducatorDashboard from "./educator/EducatorDashboard";
-import EducatorCreateDashboard from "./educator/create/EducatorCreateDashboard";
 import CourseDashboard from "./educator/course/CourseDashboard";
 import ModuleDashboard from "./educator/course/module/ModuleDashboard";
 import LessonDashboard from "./educator/course/module/lesson/LessonDashboard";
@@ -61,7 +60,6 @@ class App extends Component {
                                     <PrivateRoute exact path="/profile" component={ProfileDashboard}/>
                                     <PrivateRoute exact path="/profile/settings" component={SettingsDashboard}/>
                                     <PrivateRoute exact path="/profile/educator" component={EducatorDashboard}/>
-                                    <PrivateRoute exact path="/profile/educator/create" component={EducatorCreateDashboard}/>
                                     <PrivateRoute
                                         exact path={course_url}
                                         component={CourseDashboard}

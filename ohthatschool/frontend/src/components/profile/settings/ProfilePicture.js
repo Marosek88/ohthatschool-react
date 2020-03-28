@@ -22,14 +22,14 @@ export class ProfilePicture extends Component {
 
     handleImageChange = (e) => {
         this.setState({
-            picture: e.target.files[0]
+            image: e.target.files[0]
         })
     };
 
     onSubmit = e => {
         e.preventDefault();
         let form_data = new FormData();
-        form_data.append('picture', this.state.picture, this.state.picture.name);
+        form_data.append('image', this.state.image, this.state.image.name);
         this.props.uploadPicture(this.props.user.id, form_data);
     };
 
@@ -44,14 +44,14 @@ export class ProfilePicture extends Component {
                     <form onSubmit={this.onSubmit} encType="multipart/form-data">
 
                         <div className="form-group">
-                            <label>Upload Picture</label>
+                            <label>Upload Image</label>
                             <input
                                 type="file"
                                 id="image"
                                 accept="image/png, image/jpeg"
                                 onChange={this.handleImageChange}
                                 className="form-control"
-                                name="picture"
+                                name="image"
                                 required
                             />
                         </div>

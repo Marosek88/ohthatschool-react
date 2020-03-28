@@ -119,7 +119,7 @@ class UserProfileViewSet(ElasticModelViewSet):
     @action(detail=True, methods=['POST'])
     def upload_picture(self, request, pk=None):
         user_profile = self.get_object()
-        user_profile.picture = request.data['picture']
+        user_profile.image = request.data['image']
         user_profile.save()
         serializer = UserProfileSerializer(user_profile)
         return Response(serializer.data, 200)

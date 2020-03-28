@@ -1,6 +1,6 @@
 from datetime import datetime
 from elasticsearch_dsl import Document, Date, Nested, Boolean, analyzer, InnerDoc, Completion, Keyword, Text, Integer, \
-    Object, Float, Field, ScaledFloat
+    Object, Float, Field, ScaledFloat, GeoPoint
 
 html_strip = analyzer('html_strip',
                       tokenizer="standard",
@@ -12,6 +12,10 @@ html_strip = analyzer('html_strip',
 class EducatorDocument(Document):
     """Educator information"""
     id = Keyword()
+    first_name = Text(fields={'keyword': Keyword()})
+    last_name = Text(fields={'keyword': Keyword()})
+    email = Text(fields={'keyword': Keyword()})
+    location = GeoPoint()
     categories = Keyword()
     contributing_to_courses = Keyword()
     achievements = Keyword()

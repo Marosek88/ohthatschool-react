@@ -30,7 +30,7 @@ export class PieMenu extends Component {
 
     render() {
         return (
-            <header className="index" style={{backgroundImage: "url('../../../static/img/bg-index.jpg')"}}>
+            <header className="index" style={{backgroundImage: "url('static/img/bg-index.jpg')"}}>
                 <div className="overlay"/>
                 <div className="index-header">
                     <p>

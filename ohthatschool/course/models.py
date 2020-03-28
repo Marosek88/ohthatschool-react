@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from django.contrib.postgres.fields import JSONField
 import uuid
 
 
@@ -24,6 +23,7 @@ class Course(models.Model):
     title = models.CharField(null=False, blank=False, max_length=100, unique=True)
     owner = models.ForeignKey(User, related_name='courses', null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, related_name='courses', null=True, on_delete=models.SET_NULL)
+    image = models.ImageField(null=True, upload_to='course_pictures')
 
     def __str__(self):
         return f'Course: {self.title}'
@@ -34,6 +34,7 @@ class Module(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(null=False, blank=False, max_length=100)
     course = models.ForeignKey(Course, related_name='modules', null=True, on_delete=models.SET_NULL)
+    image = models.ImageField(null=True, upload_to='course_pictures/module_pictures')
 
     def __str__(self):
         return f'Module: {self.title}'
@@ -44,6 +45,7 @@ class Lesson(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(null=False, blank=False, max_length=100)
     module = models.ForeignKey(Module, related_name='lessons', null=True, on_delete=models.SET_NULL)
+    image = models.ImageField(null=True, upload_to='course_pictures/module_pictures/lesson_pictures')
 
     def __str__(self):
         return f'Lesson: {self.title}'
