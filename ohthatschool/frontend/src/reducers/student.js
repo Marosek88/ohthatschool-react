@@ -8,6 +8,7 @@ import {
 import {AUTH_ERROR, LOGIN_FAIL, LOGOUT_SUCCESS, REGISTER_FAIL} from "../actions/types";
 
 const initialState = {
+    educator: ["unknown"],
     courses: [],
     formInfo: [],
     view: "",

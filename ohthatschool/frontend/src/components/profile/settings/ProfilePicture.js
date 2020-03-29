@@ -40,7 +40,7 @@ export class ProfilePicture extends Component {
         return (
             <div className="col-md-6 m-auto">
                 <div className="card card-body mt-5">
-                    <ProfilePictureComponent user={this.props.user} />
+                    <ProfilePictureComponent user={this.props.user.user_profile} />
                     <form onSubmit={this.onSubmit} encType="multipart/form-data">
 
                         <div className="form-group">

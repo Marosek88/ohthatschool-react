@@ -1,9 +1,10 @@
 from rest_framework import viewsets, permissions
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from elasticsearch_dsl import Q
 
 from .models import Educator
 from .serializers import EducatorSerializer
+from student.serializers import StudentSerializer
 from .documents import EducatorDocument
 
 from misc.classes import ElasticModelViewSet
@@ -37,3 +38,9 @@ class EducatorUserViewSet(ElasticModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(id=self.request.user)
+
+    @action(detail=False, methods=['GET'])
+    def get_students(self, request):
+        students = request.user.educator.students
+        serializer = StudentSerializer(students, many=True)
+        return Response(serializer.data, 200)

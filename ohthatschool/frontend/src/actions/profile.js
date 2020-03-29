@@ -10,7 +10,7 @@ import {tokenConfig} from "./auth";
 // UPLOAD PICTURE
 export const uploadPicture = (id, form) => (dispatch, getState) => {
     axios
-        .post(`api/auth/user_profile/${id}/upload_picture/`, form, tokenConfig(getState))
+        .post(`api/auth/user_profile/update_profile_picture/`, form, tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: PICTURE_UPLOADED,

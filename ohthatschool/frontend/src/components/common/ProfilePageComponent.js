@@ -25,22 +25,39 @@ export class ProfilePageComponent extends Component {
     render() {
 
         // Get context from props
+        let image = "";
         let details_list = {};
+        let details_render;
+        let short_bio = [];
+
         if (this.props.profile_page_data.my_profile) {
-            details_list = prepareDetails(this.props.myProfileData, this.props.profile_page_data.details_prop_list)
+            // If My Profile
+            image = this.props.user.user_profile.image;
+            if (this.props.profile_page_data.get_what === "Educator's Profile") {
+                details_list = prepareDetails(this.props.user.educator, this.props.profile_page_data.details_prop_list);
+                short_bio = prepareDetails(this.props.user.educator, this.props.profile_page_data.short_bio_prop_list)[0];
+            } else if (this.props.profile_page_data.get_what === "Student's Profile") {
+                details_list = prepareDetails(this.props.user.student, this.props.profile_page_data.details_prop_list);
+                short_bio = prepareDetails(this.props.user.student, this.props.profile_page_data.short_bio_prop_list)[0];
+            } else if (this.props.profile_page_data.get_what === "Parent's Profile") {
+                details_list = prepareDetails(this.props.user.parent, this.props.profile_page_data.details_prop_list);
+                short_bio = prepareDetails(this.props.user.parent, this.props.profile_page_data.short_bio_prop_list)[0];
+            }
         } else {
+            // If not My Profile
             details_list = prepareDetails(this.props.profileData, this.props.profile_page_data.details_prop_list)
+            short_bio = prepareDetails(this.props.profileData, this.props.profile_page_data.short_bio_prop_list)[0];
         }
-        const short_bio = prepareDetails(this.props.myProfileData, this.props.profile_page_data.short_bio_prop_list)[0];
 
-        // Get context ready
-        const ready_details_list = this.props.profile_page_data.prepareDetailDataFunction(details_list);
+            // Get context ready
+            const ready_details_list = this.props.profile_page_data.prepareDetailDataFunction(details_list);
 
-        const details_render = ready_details_list.map(detail => (
-            <Fragment key={detail[0]}>
-                <strong>{detail[0]}:</strong> {detail[1]}<br/>
-            </Fragment>
-        ));
+            details_render = ready_details_list.map(detail => (
+                <Fragment key={detail[0]}>
+                    <strong>{detail[0]}:</strong> {detail[1]}<br/>
+                </Fragment>
+            ));
+
 
         return (
             this.props.profileLoading ?
@@ -54,9 +71,7 @@ export class ProfilePageComponent extends Component {
                         <div className="col-12 card card-body">
                             <div className="row">
                                 <div className="col-12 col-sm-4 mb-3">
-                                    <ProfilePictureComponent user={this.props.profile_page_data.my_profile ?
-                                        this.props.myProfileData
-                                    : this.props.profileData}/>
+                                    <ProfilePictureComponent image={image}/>
                                 </div>
                                 <div className="col-12 col-sm-8">
                                     <div className="profile-details">
@@ -82,6 +97,7 @@ const mapStateToProps = state => ({
     profileLoading: state.common.profileLoading,
     profileData: state.common.profileData,
     myProfileData: state.common.myProfileData,
+    user: state.auth.user,
 });
 
 export default connect(mapStateToProps)(ProfilePageComponent);

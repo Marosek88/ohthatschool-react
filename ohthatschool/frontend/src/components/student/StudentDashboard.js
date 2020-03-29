@@ -10,7 +10,7 @@ import {
     getList,
     resetListItems,
     resetDetails
-} from "../../actions/educator";
+} from "../../actions/student";
 import {button_types} from "../common/BubbleMenuComponent";
 
 import CreateRoleComponent from "../common/CreateRoleComponent";
@@ -20,7 +20,7 @@ import ProfilePageComponent from "../common/ProfilePageComponent";
 import AddItemComponent from "../common/AddItemComponent";
 
 
-export class EducatorDashboard extends Component {
+export class StudentDashboard extends Component {
     state = {
         previous_list_view: ""
     };
@@ -42,12 +42,12 @@ export class EducatorDashboard extends Component {
     };
 
     componentDidMount() {
-        this.props.changePage("educator_profile");
+        this.props.changePage("student_profile");
         if (this.props.page === "educator_course") {
             this.props.changeView("courses");
             this.props.changeSubView("course_list");
         } else {
-            this.props.changeView("educator_page");
+            this.props.changeView("student_page");
             this.props.changeSubView("");
         }
         this.props.getIds();
@@ -78,7 +78,7 @@ export class EducatorDashboard extends Component {
     render() {
         let render_view = null;
 
-        if (!(this.props.user.educator)) {
+        if (!(this.props.user.student)) {
 
             // Create Role
             const create_role_form = [
@@ -92,15 +92,15 @@ export class EducatorDashboard extends Component {
                 ["show_in_listings", "true"],
                 ["local_connect", "true"],
                 ["online_connect", "true"],
-                ["short_bio", "Inspired Educator ready to help you achieve your goals!"],
+                ["short_bio", "Inspired Student ready to help you achieve your goals!"],
             ];
 
             render_view = (
                 <Fragment>
                     <CreateRoleComponent createFunction={this.props.createItem}
-                                         create_what="Educator"
+                                         create_what="Student"
                                          form={create_role_form}
-                                         icon="fas fa-chalkboard-teacher"/>
+                                         icon="fas fa-user-graduate"/>
                 </Fragment>
             );
 
@@ -142,7 +142,7 @@ export class EducatorDashboard extends Component {
             const profile_page_data = {
                 my_profile: true,
                 getProfile: null,
-                get_what: "Educator's Profile",
+                get_what: "Student's Profile",
                 get_id: null,
                 details_prop_list: [
                     {label: "First name", properties: ["first_name"]},
@@ -174,7 +174,7 @@ export class EducatorDashboard extends Component {
             // Course Tile List data
             const tile_list_data = {
                 getList: this.props.getList,
-                get_what: "Educator's Courses",
+                get_what: "Student's Courses",
                 list_title: "My Courses",
                 tile_list_prop_list: [
                     {label: "Id", properties: ["id"]},
@@ -188,7 +188,7 @@ export class EducatorDashboard extends Component {
                 prepareTileDataFunction: (tile_object) => (
                     {
                         id: ["Id", tile_object["Id"]],
-                        link: `/profile/educator/my_courses/${tile_object["Id"]}`,
+                        link: `/profile/student/my_courses/${tile_object["Id"]}`,
                         image: tile_object["Image"],
                         title: tile_object["Title"],
                         subtitle: `by ${tile_object["Subtitle"]}`,
@@ -217,7 +217,7 @@ export class EducatorDashboard extends Component {
                 prepareTileDataFunction: (tile_object) => (
                     {
                         id: ["Id", tile_object["Id"]],
-                        link: `/profile/educator/my_students/${tile_object["Id"]}`,
+                        link: `/profile/student/my_students/${tile_object["Id"]}`,
                         image: tile_object["Image"],
                         title: `${tile_object["First name"]} ${tile_object["Last name"]}`,
                         subtitle: `by ${tile_object["Subtitle"]}`,
@@ -230,7 +230,7 @@ export class EducatorDashboard extends Component {
             // Achievements Tile List
             const achievements_tile_list_data = {
                 getList: this.props.getList,
-                get_what: "Educator's Achievements",
+                get_what: "Student's Achievements",
                 list_title: "My Achievements",
                 tile_list_prop_list: [
                     {label: "Id", properties: ["id"]},
@@ -242,7 +242,7 @@ export class EducatorDashboard extends Component {
                 prepareTileDataFunction: (tile_object) => (
                     {
                         id: ["Id", tile_object["Id"]],
-                        link: `/profile/educator/my_students/${tile_object["Id"]}`,
+                        link: `/profile/student/my_students/${tile_object["Id"]}`,
                         image: tile_object["Image"],
                         title: `${tile_object["First name"]} ${tile_object["Last name"]}`,
                         subtitle: `by ${tile_object["Subtitle"]}`,
@@ -260,10 +260,10 @@ export class EducatorDashboard extends Component {
                     link: "/profile",
                 },
                 {
-                    name: "educator_page",
+                    name: "student_page",
                     type: button_types.VIEW_BUTTON,
                     icon: "fas fa-id-card",
-                    view: "educator_page",
+                    view: "student_page",
                 },
                 {
                     name: "courses",
@@ -305,7 +305,7 @@ export class EducatorDashboard extends Component {
                 <Fragment>
                     <div className="container wrapper mt-2">
 
-                        {this.props.view === "educator_page" ?
+                        {this.props.view === "student_page" ?
                             <ProfilePageComponent profile_page_data={profile_page_data}/>
                             : null}
 
@@ -355,4 +355,4 @@ export default connect(mapStateToProps, {
     getList,
     resetListItems,
     resetDetails
-})(EducatorDashboard);
+})(StudentDashboard);

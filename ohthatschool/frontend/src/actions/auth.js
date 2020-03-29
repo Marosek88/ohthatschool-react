@@ -17,11 +17,11 @@ export const loadUser = () => (dispatch, getState) => {
     // User Loading
     dispatch({type: USER_LOADING});
 
-    axios.get('/api/auth/user_profile', tokenConfig(getState))
+    axios.get('/api/auth/user_profile/get_educator_profile', tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: USER_LOADED,
-                payload: res.data[0]
+                payload: res.data
             });
         })
         .catch(err => {

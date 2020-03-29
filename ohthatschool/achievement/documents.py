@@ -9,29 +9,23 @@ html_strip = analyzer('html_strip',
                       )
 
 
-class EducatorDocument(Document):
-    """Educator information"""
+class AchievementDocument(Document):
+    """Achievement information"""
     id = Keyword()
-    first_name = Text(fields={'keyword': Keyword()})
-    last_name = Text(fields={'keyword': Keyword()})
-    email = Text(fields={'keyword': Keyword()})
-    location = GeoPoint()
-    categories = Keyword()
-    contributing_to_courses = Keyword()
-    students = Keyword()
-    achievements = Keyword()
-    rating = ScaledFloat(scaling_factor=100)
+    name = Text(fields={'keyword': Keyword()})
+    related_course = Keyword()
+    related_educator = Keyword()
+    related_parent = Keyword()
+    related_student = Keyword()
+    type = Keyword()
+    image = Text(fields={'keyword': Keyword()})
     active = Boolean()
-    show_in_listings = Boolean()
-    local_connect = Boolean()
-    online_connect = Boolean()
-    short_bio = Text(required=False)
 
     created_at = Date()
     updated_at = Date()
 
     class Index:
-        name = 'educator_educator'
+        name = 'achievement_achievement'
 
     def save(self, **kwargs):
         self.meta.id = self.id

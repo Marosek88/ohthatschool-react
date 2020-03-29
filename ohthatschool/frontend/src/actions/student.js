@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 import {
-    CREATE_EDUCATOR,
+    CREATE_STUDENT,
+
     GET_PROFILE,
     GET_FORM_CONTEXT,
     GET_DETAILS,
@@ -176,12 +177,12 @@ export const getList = (get_what, get_id) => (dispatch, getState) => {
 
 export const createItem = (add_what, form) => (dispatch, getState) => {
     // ADD EDUCATOR ---------------------------------------------------------------------------------------- CREATE E
-    if (add_what === "Educator") {
+    if (add_what === "Student") {
         axios
-            .post('/api/educator/educator-user/', form, tokenConfig(getState))
+            .post('/api/student/student-user/', form, tokenConfig(getState))
             .then(res => {
                 dispatch({
-                    type: CREATE_EDUCATOR,
+                    type: CREATE_STUDENT,
                     payload: res.data
                 });
                 dispatch(returnSuccess(`${add_what} profile created successfully!`, 201))

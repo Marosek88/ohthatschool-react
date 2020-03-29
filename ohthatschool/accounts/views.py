@@ -1,3 +1,5 @@
+from django.core.exceptions import ObjectDoesNotExist
+
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -6,7 +8,14 @@ from knox.models import AuthToken
 
 from .models import UserProfile
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, UserProfileSerializer
+from educator.serializers import EducatorSerializer
+from student.serializers import StudentSerializer
+from parent.serializers import ParentSerializer
+
 from .documents import UserProfileDocument
+from educator.documents import EducatorDocument
+from student.documents import StudentDocument
+from parent.documents import ParentDocument
 
 from misc.classes import ElasticModelViewSet
 
@@ -116,11 +125,46 @@ class UserProfileViewSet(ElasticModelViewSet):
     def perform_create(self, serializer):
         serializer.save(id=self.request.user)
 
-    @action(detail=True, methods=['POST'])
-    def upload_picture(self, request, pk=None):
-        user_profile = self.get_object()
+    @action(detail=False, methods=['POST'])
+    def update_profile_picture(self, request, pk=None):
+        user_profile = request.user.user_profile
         user_profile.image = request.data['image']
         user_profile.save()
         serializer = UserProfileSerializer(user_profile)
         return Response(serializer.data, 200)
 
+    @action(detail=False, methods=['GET'])
+    def get_educator_profile(self, request, pk=None):
+        # Get User Profile and add ES data
+        user_profile = UserProfileSerializer(request.user.user_profile).data
+        self.add_es_data([user_profile, ], UserProfileDocument)
+
+        # Get Educator and add ES data (if exists)
+        try:
+            educator = EducatorSerializer(request.user.educator).data
+            self.add_es_data([educator, ], EducatorDocument)
+        except ObjectDoesNotExist:
+            educator = None
+
+        # Get Student and add ES data (if exists)
+        try:
+            student = StudentSerializer(request.user.student).data
+            self.add_es_data([student, ], StudentDocument)
+        except ObjectDoesNotExist:
+            student = None
+
+        # Get Parent and add ES data (if exists)
+        try:
+            parent = ParentSerializer(request.user.student).data
+            self.add_es_data([parent, ], ParentDocument)
+        except ObjectDoesNotExist:
+            parent = None
+
+        result = {
+            'user_profile': user_profile,
+            'educator': educator,
+            'student': student,
+            'parent': parent
+        }
+
+        return Response(result, 200)

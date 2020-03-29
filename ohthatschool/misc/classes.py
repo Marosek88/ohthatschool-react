@@ -32,7 +32,7 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
             if 'owner' in data.keys():
                 data['owner'] = response.data['owner']
             if 'image' in data.keys():
-                data['image'] = response.data['image']
+                del data['image']
 
             # Add entry to Elasticsearch
             self.es_document_class.init()
