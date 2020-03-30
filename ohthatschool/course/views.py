@@ -26,13 +26,16 @@ class CategoryViewSet(ElasticModelViewSet):
 # ------------------------------------------------- COURSE EVERYONE -------------------------------------------------
 class CourseViewSet(ElasticModelViewSet):
     """Course viewset for public access"""
-    queryset = Course.objects.all()
+    # queryset = Course.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
     serializer_class = CourseSerializer
     es_document_class = CourseDocument
     model_class = Course
+
+    def get_queryset(self):
+        return Course.objects.order_by('title')
 
     """Any modify functions are disabled"""
     def create(self, request, *args, **kwargs):
@@ -60,14 +63,14 @@ class CourseEducatorViewSet(ElasticModelViewSet):
     model_class = Course
 
     def get_queryset(self):
-        return self.request.user.courses.all()
+        return self.request.user.user_profile.educator.courses.all()
 
     # def create(self, request, *args, **kwargs):
     #     response = super().create(request, *args, **kwargs)
     #     return response
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(owner=self.request.user.user_profile.educator)
 
     @action(detail=True, methods=['GET'])
     def get_course_modules(self, request, pk=None):
@@ -88,13 +91,26 @@ class CourseEducatorViewSet(ElasticModelViewSet):
 # ------------------------------------------------- COURSE STUDENT -------------------------------------------------
 class CourseStudentViewSet(ElasticModelViewSet):
     """Student's Course viewset"""
-    # queryset = Course.objects.all()
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
     serializer_class = CourseSerializer
     es_document_class = CourseDocument
     model_class = Course
+
+    def get_queryset(self):
+        return self.request.user.user_profile.student.courses.all()
+
+    def create(self, request, *args, **kwargs):
+        pass
+
+    @action(detail=True, methods=['GET'])
+    def get_course_modules(self, request, pk=None):
+        course = self.get_object()
+        course_modules = course.modules
+        serializer = ModuleSerializer(course_modules, many=True)
+        self.add_es_data(serializer.data, ModuleDocument)
+        return Response(serializer.data, status=200)
 
 
 # ------------------------------------------------- MODULE EVERYONE -------------------------------------------------
@@ -134,7 +150,7 @@ class ModuleEducatorViewSet(ElasticModelViewSet):
     model_class = Module
 
     def get_queryset(self):
-        educators_courses = self.request.user.courses.all()
+        educators_courses = self.request.user.user_profile.educator.courses.all()
         educators_modules = Module.objects.none()
         for course in educators_courses:
             educators_modules |= course.modules.all()

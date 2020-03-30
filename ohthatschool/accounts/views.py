@@ -50,28 +50,50 @@ class RegisterAPI(generics.GenericAPIView):
 
         profile_data['id'] = user.id
         # Create a User Profile entry Django database
-        user_profile = UserProfile(id_id=profile_data['id'],
-                                   first_name=profile_data['first_name'],
-                                   last_name=profile_data['last_name']
-                                   )
-        user_profile.save()
+        user_profile_object = UserProfile(id_id=profile_data['id'],
+                                          first_name=profile_data['first_name'],
+                                          last_name=profile_data['last_name']
+                                          )
+        user_profile_object.save()
+
         # Create a User Profile entry in Elasticsearch
-        result = ""
-        count = 5
-        # Try to create the entry in Elasticsearch 5 times
-        while result == "" and count != 0:
-            try:
-                UserProfileDocument.init()
-                result = UserProfileDocument(**profile_data).save()
-                break
-            except:
-                pass
-            count -= 1
+        UserProfileDocument.init()
+        UserProfileDocument(**profile_data).save()
+
+        # Get Roles
+        es_helper = ElasticModelViewSet()
+        # Get User Profile and add ES data
+        user_profile = UserProfileSerializer(user_profile_object).data
+        es_helper.add_es_data([user_profile, ], UserProfileDocument)
+
+        # Get Educator and add ES data (if exists)
+        try:
+            educator = EducatorSerializer(user_profile_object.educator).data
+            es_helper.add_es_data([educator, ], EducatorDocument)
+        except ObjectDoesNotExist:
+            educator = None
+
+        # Get Student and add ES data (if exists)
+        try:
+            student = StudentSerializer(user_profile_object.student).data
+            es_helper.add_es_data([student, ], StudentDocument)
+        except ObjectDoesNotExist:
+            student = None
+
+        # Get Parent and add ES data (if exists)
+        try:
+            parent = ParentSerializer(user_profile_object.parent).data
+            es_helper.add_es_data([parent, ], ParentDocument)
+        except ObjectDoesNotExist:
+            parent = None
 
         return Response({
-            "user": profile_data,
+            'user_profile': user_profile,
+            'educator': educator,
+            'student': student,
+            'parent': parent,
             "token": AuthToken.objects.create(user)[1]
-        })
+        }, 200)
 
 
 class LoginAPI(generics.GenericAPIView):
@@ -82,17 +104,42 @@ class LoginAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
-        user_profile = UserProfile.objects.get(pk=user.id)
-        user_profile_serializer = UserProfileSerializer(user_profile)
-        user_profile_data = user_profile_serializer.data
-        es_user = UserProfileDocument.get(id=user.id).to_dict()
-        for key, value in es_user.items():
-            if key not in user_profile_data.keys():
-                user_profile_data[key] = value
+        user_profile_object = UserProfile.objects.get(pk=user.id)
+
+        # Get Roles
+        es_helper = ElasticModelViewSet()
+        # Get User Profile and add ES data
+        user_profile = UserProfileSerializer(user_profile_object).data
+        es_helper.add_es_data([user_profile, ], UserProfileDocument)
+
+        # Get Educator and add ES data (if exists)
+        try:
+            educator = EducatorSerializer(user_profile_object.educator).data
+            es_helper.add_es_data([educator, ], EducatorDocument)
+        except ObjectDoesNotExist:
+            educator = None
+
+        # Get Student and add ES data (if exists)
+        try:
+            student = StudentSerializer(user_profile_object.student).data
+            es_helper.add_es_data([student, ], StudentDocument)
+        except ObjectDoesNotExist:
+            student = None
+
+        # Get Parent and add ES data (if exists)
+        try:
+            parent = ParentSerializer(user_profile_object.parent).data
+            es_helper.add_es_data([parent, ], ParentDocument)
+        except ObjectDoesNotExist:
+            parent = None
+
         return Response({
-            "user": user_profile_data,
+            'user_profile': user_profile,
+            'educator': educator,
+            'student': student,
+            'parent': parent,
             "token": AuthToken.objects.create(user)[1]
-        })
+        }, 200)
 
 
 class UserAPI(generics.RetrieveAPIView):
@@ -134,28 +181,28 @@ class UserProfileViewSet(ElasticModelViewSet):
         return Response(serializer.data, 200)
 
     @action(detail=False, methods=['GET'])
-    def get_educator_profile(self, request, pk=None):
+    def get_user_profiles(self, request):
         # Get User Profile and add ES data
         user_profile = UserProfileSerializer(request.user.user_profile).data
         self.add_es_data([user_profile, ], UserProfileDocument)
 
         # Get Educator and add ES data (if exists)
         try:
-            educator = EducatorSerializer(request.user.educator).data
+            educator = EducatorSerializer(request.user.user_profile.educator).data
             self.add_es_data([educator, ], EducatorDocument)
         except ObjectDoesNotExist:
             educator = None
 
         # Get Student and add ES data (if exists)
         try:
-            student = StudentSerializer(request.user.student).data
+            student = StudentSerializer(request.user.user_profile.student).data
             self.add_es_data([student, ], StudentDocument)
         except ObjectDoesNotExist:
             student = None
 
         # Get Parent and add ES data (if exists)
         try:
-            parent = ParentSerializer(request.user.student).data
+            parent = ParentSerializer(request.user.user_profile.parent).data
             self.add_es_data([parent, ], ParentDocument)
         except ObjectDoesNotExist:
             parent = None
@@ -168,3 +215,7 @@ class UserProfileViewSet(ElasticModelViewSet):
         }
 
         return Response(result, 200)
+
+    @action(detail=False, methods=['GET'])
+    def get_educators(self, request):
+        result = UserProfile.objects.filter()

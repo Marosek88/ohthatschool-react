@@ -82,7 +82,7 @@ export class EducatorDashboard extends Component {
 
             // Create Role
             const create_role_form = [
-                ["id", this.props.user.user_profile.id],
+                // ["id__id", this.props.user.user_profile.id],
                 ["first_name", this.props.user.user_profile.first_name],
                 ["last_name", this.props.user.user_profile.last_name],
                 ["email", this.props.user.user_profile.email],
@@ -208,11 +208,11 @@ export class EducatorDashboard extends Component {
                 get_what: "Students",
                 list_title: "My Students",
                 tile_list_prop_list: [
-                    {label: "Id", properties: ["id"]},
-                    {label: "Image", properties: ["image"]},
-                    {label: "First name", properties: ["first_name"]},
-                    {label: "Last name", properties: ["last_name"]},
-                    {label: "Subtitle", properties: ["email"]},
+                    {label: "Id", properties: ["id", "id"]},
+                    {label: "Image", properties: ["id", "image"]},
+                    {label: "First name", properties: ["id", "first_name"]},
+                    {label: "Last name", properties: ["id", "last_name"]},
+                    {label: "Email", properties: ["id", "email"]},
                 ],
                 prepareTileDataFunction: (tile_object) => (
                     {
@@ -220,7 +220,7 @@ export class EducatorDashboard extends Component {
                         link: `/profile/educator/my_students/${tile_object["Id"]}`,
                         image: tile_object["Image"],
                         title: `${tile_object["First name"]} ${tile_object["Last name"]}`,
-                        subtitle: `by ${tile_object["Subtitle"]}`,
+                        subtitle: `Email: ${tile_object["Email"]}`,
                         description: "",
                         bottom: [],
                     }

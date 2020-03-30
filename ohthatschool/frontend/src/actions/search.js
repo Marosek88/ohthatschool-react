@@ -1,9 +1,6 @@
 import axios from 'axios';
 
 import {
-    CREATE_STUDENT,
-
-    GET_PROFILE,
     GET_FORM_CONTEXT,
     GET_DETAILS,
     RESET_DETAILS,
@@ -110,9 +107,9 @@ export const getDetails = (get_what, get_id) => (dispatch, getState) => {
 export const getList = (get_what, get_id) => (dispatch, getState) => {
     dispatch({type: COMMON_LOADING_LIST_ITEMS});
 
-    // STUDENT'S COURSES ---------------------------------------------------------------------------------------- E C
-    if (get_what === "Student's Courses") {
-        axios.get('/api/student/student-user/get_courses/', tokenConfig(getState))
+    // COURSES ---------------------------------------------------------------------------------------- E C
+    if (get_what === "Courses") {
+        axios.get('/api/course/course/', tokenConfig(getState))
             .then(res => {
                 dispatch({
                     type: GET_LIST_ITEMS,
@@ -125,9 +122,9 @@ export const getList = (get_what, get_id) => (dispatch, getState) => {
             });
 
     }
-    // COURSE MODULES ---------------------------------------------------------------------------------------- C M
-    else if (get_what === "Course Modules") {
-        axios.get(`/api/course/course-educator/${get_id}/get_course_modules/`, tokenConfig(getState))
+    // EDUCATORS ---------------------------------------------------------------------------------------- C M
+    else if (get_what === "Educators") {
+        axios.get(`/api/educator/educator/`, tokenConfig(getState))
             .then(res => {
                 dispatch({
                     type: GET_LIST_ITEMS,
@@ -139,34 +136,7 @@ export const getList = (get_what, get_id) => (dispatch, getState) => {
                 dispatch({type: COMMON_LOADED_LIST_ITEMS});
             });
     }
-    // MODULE LESSONS ---------------------------------------------------------------------------------------- M L
-    else if (get_what === "Module Lessons") {
-        axios.get(`/api/course/module-educator/${get_id}/get_module_lessons/`, tokenConfig(getState))
-            .then(res => {
-                dispatch({
-                    type: GET_LIST_ITEMS,
-                    payload: res.data
-                });
-            })
-            .catch(err => {
-                dispatch(returnErrors(err.response.data, err.response.status));
-                dispatch({type: COMMON_LOADED_LIST_ITEMS});
-            });
-    }
-    // EDUCATPR'S STUDENTS ---------------------------------------------------------------------------------------- M L
-    else if (get_what === "Students") {
-        axios.get(`/api/educator/educator-user/get_students/`, tokenConfig(getState))
-            .then(res => {
-                dispatch({
-                    type: GET_LIST_ITEMS,
-                    payload: res.data
-                });
-            })
-            .catch(err => {
-                dispatch(returnErrors(err.response.data, err.response.status));
-                dispatch({type: COMMON_LOADED_LIST_ITEMS});
-            });
-    }
+
 };
 
 
@@ -176,29 +146,16 @@ export const getList = (get_what, get_id) => (dispatch, getState) => {
 
 
 export const createItem = (add_what, form) => (dispatch, getState) => {
-    // ADD EDUCATOR ---------------------------------------------------------------------------------------- CREATE E
-    if (add_what === "Student") {
-        axios
-            .post('/api/student/student-user/', form, tokenConfig(getState))
-            .then(res => {
-                dispatch({
-                    type: CREATE_STUDENT,
-                    payload: res.data
-                });
-                dispatch(returnSuccess(`${add_what} profile created successfully!`, 201))
-            })
-            .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
-    }
     // ADD COURSE ---------------------------------------------------------------------------------------- CREATE C
-    else if (add_what === "Course") {
+    if (add_what === "Course") {
         axios
-            .post('/api/course/course-educator/', form, tokenConfig(getState))
+            .post('/api/student/student-course/', form, tokenConfig(getState))
             .then(res => {
                 dispatch({
                     type: CREATE_ITEM,
                     payload: res.data
                 });
-                dispatch(returnSuccess(`${add_what} created successfully!`, 201))
+                dispatch(returnSuccess(`${add_what} started successfully!`, 201))
             })
             .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
     }

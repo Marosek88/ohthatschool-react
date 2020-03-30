@@ -17,7 +17,7 @@ export const loadUser = () => (dispatch, getState) => {
     // User Loading
     dispatch({type: USER_LOADING});
 
-    axios.get('/api/auth/user_profile/get_educator_profile', tokenConfig(getState))
+    axios.get('/api/auth/user_profile/get_user_profiles', tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: USER_LOADED,

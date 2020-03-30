@@ -203,7 +203,7 @@ export class StudentDashboard extends Component {
             };
 
             // Students Tile List
-            const student_tile_list_data = {
+            const educator_tile_list_data = {
                 getList: this.props.getList,
                 get_what: "Students",
                 list_title: "My Students",
@@ -267,30 +267,15 @@ export class StudentDashboard extends Component {
                 },
                 {
                     name: "courses",
-                    type: button_types.VIEW_BUTTON_PARENT,
+                    type: button_types.VIEW_BUTTON,
                     icon: "fas fa-book-reader",
                     view: "courses",
-                    sub_view: "course_list",
-                    children: [
-                        {
-                            name: "course_list",
-                            type: button_types.SUB_VIEW_BUTTON,
-                            icon: "far fa-list-alt",
-                            sub_view: "course_list"
-                        },
-                        {
-                            name: "add_course",
-                            type: button_types.SUB_VIEW_BUTTON,
-                            icon: "fas fa-plus",
-                            sub_view: "add_course"
-                        },
-                    ]
                 },
                 {
-                    name: "student_list",
+                    name: "educator_list",
                     type: button_types.VIEW_BUTTON,
-                    icon: "fas fa-user-graduate",
-                    view: "student_list",
+                    icon: "fas fa-chalkboard-teacher",
+                    view: "educator_list",
                 },
                 {
                     name: "achievements",
@@ -309,16 +294,12 @@ export class StudentDashboard extends Component {
                             <ProfilePageComponent profile_page_data={profile_page_data}/>
                             : null}
 
-                        {this.props.sub_view === "add_course" ?
-                            <AddItemComponent form_context={form_context}/>
-                            : null}
-
-                        {this.props.sub_view === "course_list" ?
+                        {this.props.view === "courses" ?
                             <TileListComponent tile_list_data={tile_list_data}/>
                             : null}
 
-                        {this.props.view === "student_list" ?
-                            <TileListComponent tile_list_data={student_tile_list_data}/>
+                        {this.props.view === "educator_list" ?
+                            <TileListComponent tile_list_data={educator_tile_list_data}/>
                             : null}
 
                         {this.props.view === "achievements" ?

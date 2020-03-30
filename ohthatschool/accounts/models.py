@@ -9,6 +9,7 @@ class UserProfile(models.Model):
     active = models.BooleanField(default=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
     image = models.ImageField(null=True, upload_to='profile_pictures')
 
     def __str__(self):

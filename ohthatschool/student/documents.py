@@ -41,3 +41,80 @@ class StudentDocument(Document):
 
     def update(self, **kwargs):
         return super().update(updated_at=datetime.now(), **kwargs)
+
+
+class StudentCourseDocument(Document):
+    """Student Course information"""
+    id = Keyword()
+    student = Keyword()
+    course = Keyword()
+    finished = Boolean()
+
+    created_at = Date()
+    updated_at = Date()
+
+    class Index:
+        name = 'student_course'
+
+    def save(self, **kwargs):
+        self.meta.id = self.id
+        del self.id
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        self.finished = False
+        return super().save(**kwargs)
+
+    def update(self, **kwargs):
+        return super().update(updated_at=datetime.now(), **kwargs)
+
+
+class StudentModuleDocument(Document):
+    """Student Module information"""
+    id = Keyword()
+    student_course = Keyword()
+    student = Keyword()
+    module = Keyword()
+    finished = Boolean()
+
+    created_at = Date()
+    updated_at = Date()
+
+    class Index:
+        name = 'student_module'
+
+    def save(self, **kwargs):
+        self.meta.id = self.id
+        del self.id
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        self.finished = False
+        return super().save(**kwargs)
+
+    def update(self, **kwargs):
+        return super().update(updated_at=datetime.now(), **kwargs)
+
+
+class StudentLessonDocument(Document):
+    """Student Lesson information"""
+    id = Keyword()
+    student_module = Keyword()
+    student = Keyword()
+    lesson = Keyword()
+    finished = Boolean()
+
+    created_at = Date()
+    updated_at = Date()
+
+    class Index:
+        name = 'student_lesson'
+
+    def save(self, **kwargs):
+        self.meta.id = self.id
+        del self.id
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        self.finished = False
+        return super().save(**kwargs)
+
+    def update(self, **kwargs):
+        return super().update(updated_at=datetime.now(), **kwargs)

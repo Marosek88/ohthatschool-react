@@ -152,7 +152,7 @@ export const getList = (get_what, get_id) => (dispatch, getState) => {
                 dispatch({type: COMMON_LOADED_LIST_ITEMS});
             });
     }
-    // EDUCATPR'S STUDENTS ---------------------------------------------------------------------------------------- M L
+    // EDUCATOR'S STUDENTS ---------------------------------------------------------------------------------------- M L
     else if (get_what === "Students") {
         axios.get(`/api/educator/educator-user/get_students/`, tokenConfig(getState))
             .then(res => {

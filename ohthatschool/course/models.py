@@ -1,6 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
 import uuid
+
+from educator.models import Educator
 
 
 class Category(models.Model):
@@ -21,7 +22,7 @@ class Course(models.Model):
     """Course Django model"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(null=False, blank=False, max_length=100, unique=True)
-    owner = models.ForeignKey(User, related_name='courses', null=True, on_delete=models.SET_NULL)
+    owner = models.ForeignKey(Educator, related_name='courses', null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, related_name='courses', null=True, on_delete=models.SET_NULL)
     image = models.ImageField(null=True, upload_to='course_pictures')
 
@@ -33,6 +34,7 @@ class Module(models.Model):
     """Module Django model"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(null=False, blank=False, max_length=100)
+    owner = models.ForeignKey(Educator, related_name='modules', null=True, on_delete=models.SET_NULL)
     course = models.ForeignKey(Course, related_name='modules', null=True, on_delete=models.SET_NULL)
     image = models.ImageField(null=True, upload_to='course_pictures/module_pictures')
 
@@ -44,6 +46,7 @@ class Lesson(models.Model):
     """Lesson Django model"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(null=False, blank=False, max_length=100)
+    owner = models.ForeignKey(Educator, related_name='lessons', null=True, on_delete=models.SET_NULL)
     module = models.ForeignKey(Module, related_name='lessons', null=True, on_delete=models.SET_NULL)
     image = models.ImageField(null=True, upload_to='course_pictures/module_pictures/lesson_pictures')
 
