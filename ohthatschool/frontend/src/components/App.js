@@ -32,6 +32,7 @@ import CourseDashboard from "./educator/course/CourseDashboard";
 import ModuleDashboard from "./educator/course/module/ModuleDashboard";
 import LessonDashboard from "./educator/course/module/lesson/LessonDashboard";
 import StudentDashboard from "./student/StudentDashboard";
+import ComingSoonComponent from "./common/ComingSoonComponent";
 
 
 import store from "../store";
@@ -75,6 +76,8 @@ class App extends Component {
                                     <PrivateRoute exact path="/profile/settings" component={SettingsDashboard}/>
                                     <PrivateRoute exact path="/profile/educator" component={EducatorDashboard}/>
                                     <PrivateRoute exact path="/profile/student" component={StudentDashboard}/>
+                                    <PrivateRoute exact path="/profile/parent" component={ComingSoonComponent}/>
+                                    <PrivateRoute exact path="/profile/school" component={ComingSoonComponent}/>
                                     <PrivateRoute
                                         exact path={educator_course_url}
                                         component={CourseDashboard}

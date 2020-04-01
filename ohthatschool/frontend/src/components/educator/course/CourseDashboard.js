@@ -6,7 +6,7 @@ import {getIds, changePage, changeView} from "../../../actions/website";
 import {createItem, getDetails, resetDetails, getList, resetListItems} from "../../../actions/educator";
 
 import DetailsComponent from "../../common/DetailsComponent";
-import AddItemComponent from "../../common/AddItemComponent";
+import FormComponent from "../../common/FormComponent";
 import BubbleMenuComponent, {button_types} from "../../common/BubbleMenuComponent";
 import ListComponent from "../../common/ListComponent";
 
@@ -73,8 +73,8 @@ export class CourseDashboard extends Component {
         // Form component
         const form_context = {
             getFormContext: null,
-            createItem: this.props.createItem,
-            add_what: "Module",
+            submitFunction: this.props.createItem,
+            what: "Module",
             field_list: [
                 {field_type: "invisible", label: "", name: "course", start_value: this.props.ids.my_course},
                 {field_type: "image", label: "Module Image", name: "image"},
@@ -117,7 +117,7 @@ export class CourseDashboard extends Component {
                         : null}
 
                     {this.props.ids.my_course && this.props.view === "add_module" ?
-                        <AddItemComponent form_context={form_context}
+                        <FormComponent form_context={form_context}
                         />
                         : null}
                     <BubbleMenuComponent button_list={button_list}/>

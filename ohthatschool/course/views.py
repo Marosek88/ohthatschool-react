@@ -1,8 +1,8 @@
+from django.db.models import Q
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from elasticsearch_dsl import Q
-import uuid
+import json
 
 from .models import Category, Course, Module, Lesson
 from .serializers import CategorySerializer, CourseSerializer, ModuleSerializer, LessonSerializer
@@ -50,6 +50,25 @@ class CourseViewSet(ElasticModelViewSet):
     def destroy(self, request, pk=None, *args, **kwargs):
         pass
 
+    @action(detail=False, methods=['POST'])
+    def search(self, request):
+        categories = json.loads(request.data['categories'])
+        sort_by = request.data['sort_by']
+        query = request.data['query']
+        # Prepare queries
+        q = Q()
+        if categories:
+            q |= Q(category__in=categories)
+        if query:
+            q |= Q(title__contains=query)
+        courses = Course.objects.filter(q)
+        # Sort
+        if sort_by:
+            courses.order_by(f'{sort_by}')
+        data = CourseSerializer(courses, many=True).data
+        self.add_es_data(data)
+        return Response(data, 200)
+
 
 # ------------------------------------------------- COURSE EDUCATOR -------------------------------------------------
 class CourseEducatorViewSet(ElasticModelViewSet):
@@ -65,10 +84,6 @@ class CourseEducatorViewSet(ElasticModelViewSet):
     def get_queryset(self):
         return self.request.user.user_profile.educator.courses.all()
 
-    # def create(self, request, *args, **kwargs):
-    #     response = super().create(request, *args, **kwargs)
-    #     return response
-
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user.user_profile.educator)
 
@@ -79,13 +94,6 @@ class CourseEducatorViewSet(ElasticModelViewSet):
         serializer = ModuleSerializer(course_modules, many=True)
         self.add_es_data(serializer.data, ModuleDocument)
         return Response(serializer.data, status=200)
-
-    # @action(detail=True, methods=['POST'])
-    # def create_module(self, request, pk=None):
-    #     course = self.get_object()
-    #     module = Module
-    #     serializer = ModuleSerializer(course_modules, many=True)
-    #     return Response(serializer.data, status=200)
 
 
 # ------------------------------------------------- COURSE STUDENT -------------------------------------------------

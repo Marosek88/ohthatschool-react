@@ -8,8 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('frontend.urls')),  # Needs to be on top
     path('', include('accounts.urls')),
-    # path('', include('achievement.urls')),
-    # path('', include('connect.urls')),
+    path('', include('achievement.urls')),
     path('', include('course.urls')),
     path('', include('educator.urls')),
     # path('', include('parent.urls')),

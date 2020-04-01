@@ -16,7 +16,6 @@ export const REGISTER_FAIL = "REGISTER_FAIL";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 
 // Common
-export const GET_MY_PROFILE = "GET_MY_PROFILE";
 export const GET_PROFILE = "GET_PROFILE";
 export const GET_FORM_CONTEXT = "GET_FORM_CONTEXT";
 export const GET_DETAILS = "GET_DETAILS";
@@ -34,9 +33,11 @@ export const COMMON_LOADING_PROFILE = "COMMON_LOADING_PROFILE";
 export const COMMON_LOADED_PROFILE = "COMMON_LOADED_PROFILE";
 export const RESET_MY_PROFILE = "RESET_MY_PROFILE";
 export const RESET_PROFILE = "RESET_PROFILE";
+export const RESET_FORM_CONTEXT = "RESET_FORM_CONTEXT";
 
 // Profile
 export const PICTURE_UPLOADED = "PICTURE_UPLOADED";
+export const UPDATE_PROFILE = "UPDATE_PROFILE";
 
 // Message alerts
 export const RETURN_ERRORS = "RETURN_ERRORS";
@@ -68,3 +69,6 @@ export const GET_LESSON_DETAILS = "GET_LESSON_DETAILS";
 
 // Student Page
 export const CREATE_STUDENT = "CREATE_STUDENT";
+
+// Search Page
+export const GET_SEARCH_CATEGORIES = "GET_SEARCH_CATEGORIES";

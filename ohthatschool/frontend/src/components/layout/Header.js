@@ -2,7 +2,12 @@ import React, {Component, Fragment} from 'react';
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+
 import {logout} from "../../actions/auth";
+import {getCategories, search} from "../../actions/search";
+
+import SearchControlsComponent from "../common/SearchControlsComponent";
+
 
 export class Header extends Component {
     static propTypes = {
@@ -51,28 +56,7 @@ export class Header extends Component {
                     {this.props.page === "search" ?
                         null
                         :
-                        <Fragment>
-                            <div className="btn-group my-2 my-lg-0 mr-sm-2 ml-lg-5">
-                                <button type="button" className="btn btn-outline-primary dropdown-toggle"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    <i className="fas fa-th"/> Categories
-                                </button>
-                                <div className="dropdown-menu">
-                                    <a className="navbar-close dropdown-item" href="#">Action</a>
-                                    <a className="navbar-close dropdown-item" href="#">Another action</a>
-                                    <a className="navbar-close dropdown-item" href="#">Something else here</a>
-                                    <div className="dropdown-divider"/>
-                                    <a className="navbar-close dropdown-item" href="#">Separated link</a>
-                                </div>
-                            </div>
-                            <form className="form-inline my-2 my-lg-0">
-                                <input className="form-control mr-sm-2" type="search" placeholder="Search"/>
-                                <button className="navbar-close btn btn-outline-primary my-2 my-sm-0"
-                                        type="submit">Search
-                                </button>
-                            </form>
-                        </Fragment>
+                        <SearchControlsComponent />
                     }
 
                     <ul className="navbar-close navbar-nav mt-2 mt-lg-0 ml-auto">
@@ -93,5 +77,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {logout}
+    {logout, getCategories, search}
 )(Header);

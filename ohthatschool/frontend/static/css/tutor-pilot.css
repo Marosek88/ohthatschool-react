@@ -689,6 +689,36 @@ footer.footer {
     }
 }
 
+@keyframes vns-shake {
+    0% {
+        transform: rotate(0deg);
+    }
+    12.5% {
+        transform: rotate(40deg);
+    }
+    25% {
+        transform: rotate(-40deg);
+    }
+    37.5% {
+        transform: rotate(20deg);
+    }
+    50% {
+        transform: rotate(-20deg);
+    }
+    62.5% {
+        transform: rotate(7deg);
+    }
+    75% {
+        transform: rotate(-7deg);
+    }
+    87.5% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
 .vns-loading-icon {
     font-size: 8em;
     font-weight: 100;
@@ -702,6 +732,16 @@ footer.footer {
 .vns-loading-td {
     text-align: center;
     vertical-align: middle;
+}
+
+.vns-shaking-icon {
+    font-size: 8em;
+    font-weight: 100;
+    margin: 20px;
+    animation-name: vns-shake;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
 .vns-link {

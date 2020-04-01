@@ -1,4 +1,3 @@
-import uuid
 from django.db import models, transaction
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -25,10 +24,13 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data.dict()
-        # TODO: sort out this atomic transaction, it's not properly implemented
         with transaction.atomic():
             response = super().create(request, *args, **kwargs)
-            data['id'] = response.data['id']
+            # Make sure id is not a nested object
+            item_id = response.data['id']
+            while type(item_id) not in [int, str]:
+                item_id = item_id['id']
+            data['id'] = item_id
             if 'owner' in data.keys():
                 data['owner'] = response.data['owner']
             if 'image' in data.keys():
@@ -60,7 +62,9 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
         else:
             result = kwargs['partial_result']
         if result == 'Updated':
-            return super().update(request, *args, **kwargs)
+            data = super().update(request, *args, **kwargs).data
+            self.add_es_data([data])
+            return Response(data, 200)
         elif result == 'Elasticsearch entry not found':
             return Response({"error_messages": {"elasticsearch": "Elasticsearch entry not found"}}, status=400)
         elif result == "Couldn't connect to Elasticsearch":
@@ -86,14 +90,19 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
     def add_es_data(self, data_list, alternative_es_document=None):
         for item in data_list:
             if 'id' in item:
+                # Make sure id isn't an object
+                item_id = item['id']
+                while type(item_id) not in [int, str]:
+                    item_id = item_id['id']
                 success = False
+
                 # Try to connect to Elasticsearch 5 times
                 for i in range(5):
                     try:
                         if alternative_es_document:
-                            es_entry = alternative_es_document.get(id=item['id'], ignore=404)
+                            es_entry = alternative_es_document.get(id=item_id, ignore=404)
                         else:
-                            es_entry = self.es_document_class.get(id=item['id'], ignore=404)
+                            es_entry = self.es_document_class.get(id=item_id, ignore=404)
                         if es_entry:
                             for k, v in es_entry.to_dict().items():
                                 if k not in item.keys():
@@ -110,7 +119,11 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
     def update_es(self, es_id, request_dict):
         data = {}
         for key, value in request_dict.items():
-            if key != 'id':
+            if key[:-5] == 'location':
+                if "location" not in data:
+                    data["location"] = {}
+                data["location"][key[-3:]] = value
+            elif key != 'id':
                 data[key] = value
         # Try to update Elasticsearch 5 times
         result = "Couldn't connect to Elasticsearch"

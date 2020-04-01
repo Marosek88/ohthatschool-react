@@ -52,7 +52,9 @@ class RegisterAPI(generics.GenericAPIView):
         # Create a User Profile entry Django database
         user_profile_object = UserProfile(id_id=profile_data['id'],
                                           first_name=profile_data['first_name'],
-                                          last_name=profile_data['last_name']
+                                          last_name=profile_data['last_name'],
+                                          email=profile_data['email'],
+                                          active=profile_data['active'],
                                           )
         user_profile_object.save()
 
@@ -177,8 +179,9 @@ class UserProfileViewSet(ElasticModelViewSet):
         user_profile = request.user.user_profile
         user_profile.image = request.data['image']
         user_profile.save()
-        serializer = UserProfileSerializer(user_profile)
-        return Response(serializer.data, 200)
+        data = UserProfileSerializer(user_profile).data
+        self.add_es_data([data, ])
+        return Response(data, 200)
 
     @action(detail=False, methods=['GET'])
     def get_user_profiles(self, request):
@@ -215,7 +218,3 @@ class UserProfileViewSet(ElasticModelViewSet):
         }
 
         return Response(result, 200)
-
-    @action(detail=False, methods=['GET'])
-    def get_educators(self, request):
-        result = UserProfile.objects.filter()

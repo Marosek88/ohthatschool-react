@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import {prepareDetails} from "../../support/helpers";
 import TileComponent from "../common/TileComponent";
 import LoadingComponent from "./LoadingComponent";
-import ProfilePictureComponent from "./ProfilePictureComponent";
 
 
 export class TileListComponent extends Component {
@@ -21,13 +20,10 @@ export class TileListComponent extends Component {
     };
 
     componentDidMount() {
-        if (this.props.listItems.length === 0) {
-            this.props.tile_list_data.getList(this.props.tile_list_data.get_what)
-        }
+        this.props.tile_list_data.getList(this.props.tile_list_data.get_what)
     }
 
     render() {
-
         const content = () => {
             if (this.props.listItems.length) {
 

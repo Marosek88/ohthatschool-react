@@ -9,10 +9,10 @@ from parent.serializers import ParentSerializer
 
 class AchievementSerializer(serializers.ModelSerializer):
     """Achievement model serializer."""
-    related_course = CourseSerializer(required=False)
-    related_educator = EducatorSerializer(required=False)
-    related_student = StudentSerializer(required=False)
-    related_parent = ParentSerializer(required=False)
+    related_courses = CourseSerializer(required=False, many=True)
+    related_educators = EducatorSerializer(required=False, many=True)
+    related_students = StudentSerializer(required=False, many=True)
+    related_parents = ParentSerializer(required=False, many=True)
 
     class Meta:
         model = Achievement

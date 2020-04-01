@@ -12,13 +12,9 @@ html_strip = analyzer('html_strip',
 class StudentDocument(Document):
     """Student information"""
     id = Keyword()
-    first_name = Text(fields={'keyword': Keyword()})
-    last_name = Text(fields={'keyword': Keyword()})
-    email = Text(fields={'keyword': Keyword()})
     location = GeoPoint()
     categories = Keyword()
     courses = Keyword()
-    achievements = Keyword()
     active = Boolean()
     show_in_listings = Boolean()
     local_connect = Boolean()

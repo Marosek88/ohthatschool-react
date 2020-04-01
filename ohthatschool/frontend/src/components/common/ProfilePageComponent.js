@@ -9,17 +9,11 @@ import LoadingComponent from "./LoadingComponent";
 export class ProfilePageComponent extends Component {
     static propTypes = {
         profileLoading: PropTypes.bool.isRequired,
-        myProfileData: PropTypes.object.isRequired,
         profileData: PropTypes.object.isRequired,
     };
 
     componentDidMount() {
-        if (this.props.myProfileData.length === 0) {
-            this.props.profile_page_data.getProfile(
-                this.props.profile_page_data.get_what,
-                this.props.profile_page_data.get_id
-            );
-        }
+
     }
 
     render() {
@@ -66,7 +60,7 @@ export class ProfilePageComponent extends Component {
                 :
 
                 <Fragment>
-
+                    <h3>{this.props.profile_page_data.get_what}</h3>
                     <div className="row py-4">
                         <div className="col-12 card card-body">
                             <div className="row">
@@ -96,7 +90,6 @@ export class ProfilePageComponent extends Component {
 const mapStateToProps = state => ({
     profileLoading: state.common.profileLoading,
     profileData: state.common.profileData,
-    myProfileData: state.common.myProfileData,
     user: state.auth.user,
 });
 

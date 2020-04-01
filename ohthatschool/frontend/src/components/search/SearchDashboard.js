@@ -3,18 +3,15 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {getIds, changePage, changeView, changeSubView} from "../../actions/website";
-import {
-    getFormContext,
-    getDetails,
-    getList,
-    resetListItems,
-    resetDetails
-} from "../../actions/search";
+import {getList} from "../../actions/search";
+import {resetListItems} from "../../actions/common";
+
 import {button_types} from "../common/BubbleMenuComponent";
 
 import TileListComponent from "../common/TileListComponent";
 import BubbleMenuComponent from "../common/BubbleMenuComponent";
 import SearchBarComponent from "../common/SearchBarComponent";
+import ComingSoonComponent from "../common/ComingSoonComponent";
 
 
 export class SearchDashboard extends Component {
@@ -30,11 +27,8 @@ export class SearchDashboard extends Component {
         changeView: PropTypes.func.isRequired,
         changeSubView: PropTypes.func.isRequired,
         getIds: PropTypes.func.isRequired,
-        getFormContext: PropTypes.func.isRequired,
-        getDetails: PropTypes.func.isRequired,
         getList: PropTypes.func.isRequired,
         resetListItems: PropTypes.func.isRequired,
-        resetDetails: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
@@ -51,7 +45,6 @@ export class SearchDashboard extends Component {
         this.props.changePage("");
         this.props.changeView("");
         this.props.changeSubView("");
-        this.props.resetDetails();
         this.props.resetListItems();
     }
 
@@ -172,11 +165,11 @@ export class SearchDashboard extends Component {
                         : null}
 
                     {this.props.view === "educators" ?
-                        <TileListComponent tile_list_data={educators_tile_list_data}/>
+                        <ComingSoonComponent bubble_menu={false}/>
                         : null}
 
                     {this.props.view === "students" ?
-                        <TileListComponent tile_list_data={students_tile_list_data}/>
+                        <ComingSoonComponent bubble_menu={false}/>
                         : null}
 
                 </div>
@@ -201,9 +194,6 @@ export default connect(mapStateToProps, {
     changeView,
     changeSubView,
     getIds,
-    getFormContext,
-    getDetails,
     getList,
     resetListItems,
-    resetDetails
 })(SearchDashboard);

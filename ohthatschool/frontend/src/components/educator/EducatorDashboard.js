@@ -17,7 +17,7 @@ import CreateRoleComponent from "../common/CreateRoleComponent";
 import TileListComponent from "../common/TileListComponent";
 import BubbleMenuComponent from "../common/BubbleMenuComponent";
 import ProfilePageComponent from "../common/ProfilePageComponent";
-import AddItemComponent from "../common/AddItemComponent";
+import FormComponent from "../common/FormComponent";
 
 
 export class EducatorDashboard extends Component {
@@ -82,11 +82,6 @@ export class EducatorDashboard extends Component {
 
             // Create Role
             const create_role_form = [
-                // ["id__id", this.props.user.user_profile.id],
-                ["first_name", this.props.user.user_profile.first_name],
-                ["last_name", this.props.user.user_profile.last_name],
-                ["email", this.props.user.user_profile.email],
-                ["image", this.props.user.user_profile.image],
                 ["location", [this.props.user.user_profile.location.lat, this.props.user.user_profile.location.lon]],
                 ["active", "true"],
                 ["show_in_listings", "true"],
@@ -109,8 +104,8 @@ export class EducatorDashboard extends Component {
             // Add Course data
             const form_context = {
                 getFormContext: this.props.getFormContext,
-                createItem: this.props.createItem,
-                add_what: "Course",
+                submitFunction: this.props.createItem,
+                what: "Course",
                 field_list: [
                     {field_type: "image", label: "Course Image", name: "image"},
                     {field_type: "text", label: "Title", name: "title", start_value: ""},
@@ -145,9 +140,9 @@ export class EducatorDashboard extends Component {
                 get_what: "Educator's Profile",
                 get_id: null,
                 details_prop_list: [
-                    {label: "First name", properties: ["first_name"]},
-                    {label: "Last name", properties: ["last_name"]},
-                    {label: "Email", properties: ["email"]},
+                    {label: "First name", properties: ["id", "first_name"]},
+                    {label: "Last name", properties: ["id", "last_name"]},
+                    {label: "Email", properties: ["id", "email"]},
                     {label: "Active", properties: ["active"]},
                     {label: "Teaches locally", properties: ["local_connect"]},
                     {label: "Teaches remotely", properties: ["online_connect"]},
@@ -180,7 +175,7 @@ export class EducatorDashboard extends Component {
                     {label: "Id", properties: ["id"]},
                     {label: "Image", properties: ["image"]},
                     {label: "Title", properties: ["title"]},
-                    {label: "Subtitle", properties: ["owner", "username"]},
+                    {label: "Subtitle", properties: ["owner", "id", "email"]},
                     {label: "Description", properties: ["description"]},
                     {label: "Rating", properties: ["rating"]},
                     {label: "Price", properties: ["price"]},
@@ -235,18 +230,17 @@ export class EducatorDashboard extends Component {
                 tile_list_prop_list: [
                     {label: "Id", properties: ["id"]},
                     {label: "Image", properties: ["image"]},
-                    {label: "First name", properties: ["first_name"]},
-                    {label: "Last name", properties: ["last_name"]},
-                    {label: "Subtitle", properties: ["email"]},
+                    {label: "Name", properties: ["name"]},
+                    {label: "Description", properties: ["description"]},
                 ],
                 prepareTileDataFunction: (tile_object) => (
                     {
                         id: ["Id", tile_object["Id"]],
-                        link: `/profile/educator/my_students/${tile_object["Id"]}`,
+                        link: `/profile/educator/awards/${tile_object["Id"]}`,
                         image: tile_object["Image"],
-                        title: `${tile_object["First name"]} ${tile_object["Last name"]}`,
-                        subtitle: `by ${tile_object["Subtitle"]}`,
-                        description: "",
+                        title: tile_object["Name"],
+                        subtitle: null,
+                        description: tile_object["Description"],
                         bottom: [],
                     }
                 )
@@ -303,14 +297,14 @@ export class EducatorDashboard extends Component {
 
             render_view = (
                 <Fragment>
-                    <div className="container wrapper mt-2">
+                    <div className="container wrapper mt-2 mt-lg-4">
 
                         {this.props.view === "educator_page" ?
                             <ProfilePageComponent profile_page_data={profile_page_data}/>
                             : null}
 
                         {this.props.sub_view === "add_course" ?
-                            <AddItemComponent form_context={form_context}/>
+                            <FormComponent form_context={form_context}/>
                             : null}
 
                         {this.props.sub_view === "course_list" ?

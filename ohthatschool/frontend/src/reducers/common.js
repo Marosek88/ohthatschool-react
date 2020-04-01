@@ -10,9 +10,13 @@ import {
     COMMON_LOADING_LIST_ITEMS,
     COMMON_LOADING_PROFILE,
     RESET_PROFILE,
-    RESET_MY_PROFILE,
-} from "../actions/types.js";
-import {AUTH_ERROR, GET_MY_PROFILE, GET_PROFILE, LOGIN_FAIL, LOGOUT_SUCCESS, REGISTER_FAIL} from "../actions/types";
+    AUTH_ERROR,
+    GET_PROFILE,
+    LOGIN_FAIL,
+    LOGOUT_SUCCESS,
+    REGISTER_FAIL,
+    RESET_FORM_CONTEXT
+} from "../actions/types";
 
 const initialState = {
     formContext: [],
@@ -24,7 +28,6 @@ const initialState = {
     listItems: [],
     listItemsLoading: false,
 
-    myProfileData: {"id": "unknown"},
     profileData: {},
     profileLoading: false,
 };
@@ -71,13 +74,6 @@ export default function (state = initialState, action) {
                 formContext: action.payload,
                 formLoading: false,
             };
-        case GET_MY_PROFILE:
-            const my_profile_id = action.payload.length > 0 ? action.payload[0] : {};
-            return {
-                ...state,
-                myProfileData: my_profile_id,
-                profileLoading: false,
-            };
         case GET_PROFILE:
             return {
                 ...state,
@@ -98,11 +94,6 @@ export default function (state = initialState, action) {
             };
 
         // --------------------------------- RESET INFORMATION ---------------------------------
-        case RESET_MY_PROFILE:
-            return {
-                ...state,
-                myProfileData: {},
-            };
         case RESET_PROFILE:
             return {
                 ...state,
@@ -117,6 +108,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 listItems: [],
+            };
+        case RESET_FORM_CONTEXT:
+            return {
+                ...state,
+                formContext: [],
             };
         default:
             return state;

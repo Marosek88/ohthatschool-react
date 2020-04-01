@@ -10,7 +10,6 @@ class StudentSerializer(serializers.ModelSerializer):
     """Student model serializer."""
     id = UserProfileSerializer(required=False)
     educators = EducatorSerializer(required=False, many=True)
-    courses = CourseSerializer(required=False, many=True)
     categories = CategorySerializer(required=False, many=True)
 
     class Meta:

@@ -3,8 +3,12 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import Educator
+from achievement.models import Achievement
+
 from .serializers import EducatorSerializer
+from achievement.serializers import AchievementSerializer
 from student.serializers import StudentSerializer
+
 from .documents import EducatorDocument
 
 from misc.classes import ElasticModelViewSet
@@ -58,4 +62,13 @@ class EducatorUserViewSet(ElasticModelViewSet):
     def get_students(self, request):
         students = request.user.user_profile.educator.students
         serializer = StudentSerializer(students, many=True)
+        return Response(serializer.data, 200)
+
+    @action(detail=False, methods=['GET'])
+    def get_achievements(self, request):
+        achievements = request.user.user_profile.educator.achievements.filter(type__in=[
+            Achievement.TypeChoices.FROM_PARENT_TO_EDUCATOR,
+            Achievement.TypeChoices.FROM_STUDENT_TO_EDUCATOR
+        ])
+        serializer = AchievementSerializer(achievements, many=True)
         return Response(serializer.data, 200)

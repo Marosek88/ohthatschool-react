@@ -6,7 +6,6 @@ import {getIds, changePage, changeView, changeSubView} from "../../actions/websi
 import {
     getFormContext,
     createItem,
-    getDetails,
     getList,
     resetListItems,
     resetDetails
@@ -17,7 +16,6 @@ import CreateRoleComponent from "../common/CreateRoleComponent";
 import TileListComponent from "../common/TileListComponent";
 import BubbleMenuComponent from "../common/BubbleMenuComponent";
 import ProfilePageComponent from "../common/ProfilePageComponent";
-import AddItemComponent from "../common/AddItemComponent";
 
 
 export class StudentDashboard extends Component {
@@ -35,7 +33,6 @@ export class StudentDashboard extends Component {
         getIds: PropTypes.func.isRequired,
         getFormContext: PropTypes.func.isRequired,
         createItem: PropTypes.func.isRequired,
-        getDetails: PropTypes.func.isRequired,
         getList: PropTypes.func.isRequired,
         resetListItems: PropTypes.func.isRequired,
         resetDetails: PropTypes.func.isRequired,
@@ -43,28 +40,12 @@ export class StudentDashboard extends Component {
 
     componentDidMount() {
         this.props.changePage("student_profile");
-        if (this.props.page === "educator_course") {
-            this.props.changeView("courses");
-            this.props.changeSubView("course_list");
-        } else {
-            this.props.changeView("student_page");
-            this.props.changeSubView("");
-        }
+        this.props.changeView("student_page");
         this.props.getIds();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (["courses", "student_list", "achievements"].includes(prevProps.view)) {
-            if (["courses", "student_list", "achievements"].includes(this.props.view)) {
-                this.props.resetListItems()
-            } else {
-                this.state.previous_list_view = prevProps.view
-            }
-        } else {
-            if (this.state.previous_list_view !== this.props.view) {
-                this.props.resetListItems()
-            }
-        }
+        this.props.resetListItems()
     }
 
     componentWillUnmount() {
@@ -82,11 +63,6 @@ export class StudentDashboard extends Component {
 
             // Create Role
             const create_role_form = [
-                ["id", this.props.user.user_profile.id],
-                ["first_name", this.props.user.user_profile.first_name],
-                ["last_name", this.props.user.user_profile.last_name],
-                ["email", this.props.user.user_profile.email],
-                ["image", this.props.user.user_profile.image],
                 ["location", [this.props.user.user_profile.location.lat, this.props.user.user_profile.location.lon]],
                 ["active", "true"],
                 ["show_in_listings", "true"],
@@ -106,38 +82,6 @@ export class StudentDashboard extends Component {
 
         } else {
 
-            // Add Course data
-            const form_context = {
-                getFormContext: this.props.getFormContext,
-                createItem: this.props.createItem,
-                add_what: "Course",
-                field_list: [
-                    {field_type: "image", label: "Course Image", name: "image"},
-                    {field_type: "text", label: "Title", name: "title", start_value: ""},
-                    {field_type: "textarea", label: "Description", name: "description", start_value: ""},
-                    {
-                        field_type: "select",
-                        label: "Category",
-                        name: "category",
-                        options: null,
-                        start_value: ""
-                    },
-                    {field_type: "text", label: "Price", name: "price", start_value: "0"},
-                ],
-                addContextToForm: (context, field_list) => {
-                    let category_options = [];
-                    context.map(category => {
-                        category_options.push({field_name: "category", value: category.id, label: category.name})
-                    });
-                    field_list.map(field => {
-                        if (field.label === "Category") {
-                            field["options"] = category_options
-                        }
-                    });
-                }
-            };
-
-
             // Profile Page data
             const profile_page_data = {
                 my_profile: true,
@@ -145,9 +89,9 @@ export class StudentDashboard extends Component {
                 get_what: "Student's Profile",
                 get_id: null,
                 details_prop_list: [
-                    {label: "First name", properties: ["first_name"]},
-                    {label: "Last name", properties: ["last_name"]},
-                    {label: "Email", properties: ["email"]},
+                    {label: "First name", properties: ["id", "first_name"]},
+                    {label: "Last name", properties: ["id", "last_name"]},
+                    {label: "Email", properties: ["id", "email"]},
                     {label: "Active", properties: ["active"]},
                     {label: "Teaches locally", properties: ["local_connect"]},
                     {label: "Teaches remotely", properties: ["online_connect"]},
@@ -170,7 +114,6 @@ export class StudentDashboard extends Component {
                 }
             };
 
-
             // Course Tile List data
             const tile_list_data = {
                 getList: this.props.getList,
@@ -178,12 +121,12 @@ export class StudentDashboard extends Component {
                 list_title: "My Courses",
                 tile_list_prop_list: [
                     {label: "Id", properties: ["id"]},
-                    {label: "Image", properties: ["image"]},
-                    {label: "Title", properties: ["title"]},
-                    {label: "Subtitle", properties: ["owner", "username"]},
-                    {label: "Description", properties: ["description"]},
-                    {label: "Rating", properties: ["rating"]},
-                    {label: "Price", properties: ["price"]},
+                    {label: "Image", properties: ["course", "image"]},
+                    {label: "Title", properties: ["course", "title"]},
+                    {label: "Subtitle", properties: ["course", "owner", "id", "email"]},
+                    {label: "Description", properties: ["course", "description"]},
+                    {label: "Rating", properties: ["course", "rating"]},
+                    {label: "Price", properties: ["course", "price"]},
                 ],
                 prepareTileDataFunction: (tile_object) => (
                     {
@@ -202,17 +145,17 @@ export class StudentDashboard extends Component {
                 )
             };
 
-            // Students Tile List
+            // Educators Tile List
             const educator_tile_list_data = {
                 getList: this.props.getList,
-                get_what: "Students",
-                list_title: "My Students",
+                get_what: "Educators",
+                list_title: "My Educators",
                 tile_list_prop_list: [
-                    {label: "Id", properties: ["id"]},
-                    {label: "Image", properties: ["image"]},
-                    {label: "First name", properties: ["first_name"]},
-                    {label: "Last name", properties: ["last_name"]},
-                    {label: "Subtitle", properties: ["email"]},
+                    {label: "Id", properties: ["id", "id"]},
+                    {label: "Image", properties: ["id", "image"]},
+                    {label: "First name", properties: ["id", "first_name"]},
+                    {label: "Last name", properties: ["id", "last_name"]},
+                    {label: "Subtitle", properties: ["id", "email"]},
                 ],
                 prepareTileDataFunction: (tile_object) => (
                     {
@@ -221,7 +164,7 @@ export class StudentDashboard extends Component {
                         image: tile_object["Image"],
                         title: `${tile_object["First name"]} ${tile_object["Last name"]}`,
                         subtitle: `by ${tile_object["Subtitle"]}`,
-                        description: "",
+                        description: null,
                         bottom: [],
                     }
                 )
@@ -332,7 +275,6 @@ export default connect(mapStateToProps, {
     getIds,
     getFormContext,
     createItem,
-    getDetails,
     getList,
     resetListItems,
     resetDetails

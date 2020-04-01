@@ -3,12 +3,16 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import Student, StudentCourse, StudentModule, StudentLesson
+from achievement.models import Achievement
 
 from .serializers import StudentSerializer, StudentCourseSerializer, StudentModuleSerializer, StudentLessonSerializer
+from achievement.serializers import AchievementSerializer
 from educator.serializers import EducatorSerializer
 from course.serializers import CourseSerializer
 
 from .documents import StudentDocument, StudentCourseDocument, StudentModuleDocument, StudentLessonDocument
+from course.documents import CourseDocument
+from educator.documents import EducatorDocument
 
 from misc.classes import ElasticModelViewSet
 
@@ -43,9 +47,19 @@ class StudentUserViewSet(ElasticModelViewSet):
         serializer.save(id=self.request.user.user_profile)
 
     @action(detail=False, methods=['GET'])
-    def get_courses(self, request):
-        courses = request.user.student.courses
-        serializer = CourseSerializer(courses, many=True)
+    def get_educators(self, request):
+        educators = request.user.user_profile.student.educators
+        data = EducatorSerializer(educators, many=True).data
+        self.add_es_data(data, EducatorDocument)
+        return Response(data, 200)
+
+    @action(detail=False, methods=['GET'])
+    def get_achievements(self, request):
+        achievements = request.user.user_profile.student.achievements.filter(type__in=[
+            Achievement.TypeChoices.FROM_COURSE_TO_STUDENT,
+            Achievement.TypeChoices.FROM_EDUCATOR_TO_STUDENT
+        ])
+        serializer = AchievementSerializer(achievements, many=True)
         return Response(serializer.data, 200)
 
 
@@ -60,16 +74,23 @@ class StudentCourseViewSet(ElasticModelViewSet):
     model_class = StudentCourse
 
     def get_queryset(self):
-        result = StudentCourse.objects.filter(student=self.request.user.id)
+        result = StudentCourse.objects.filter(student=self.request.user.user_profile.student)
         return result
 
     def perform_create(self, serializer):
 
+        serializer.save(student=self.request.user.user_profile.student)
 
-        serializer.save(student=self.request.user.student)
+    @action(detail=False, methods=['GET'])
+    def get_student_courses(self, request):
+        student_courses = request.user.user_profile.student.student_courses
+        data = StudentCourseSerializer(student_courses, many=True).data
+        for item in data:
+            self.add_es_data([item['course']], CourseDocument)
+        return Response(data, 200)
 
     @action(detail=True, methods=['GET'])
-    def get_modules(self, request):
+    def get_modules(self):
         modules = self.get_object().modules
         serializer = CourseSerializer(modules, many=True)
         return Response(serializer.data, 200)

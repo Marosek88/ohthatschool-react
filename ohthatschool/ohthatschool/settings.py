@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'frontend',
     'accounts.apps.AccountsConfig',
     'achievement.apps.AchievementConfig',
-    'connect.apps.ConnectConfig',
     'course.apps.CourseConfig',
     'educator.apps.EducatorConfig',
     'parent.apps.ParentConfig',

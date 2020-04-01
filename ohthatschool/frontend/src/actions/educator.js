@@ -166,6 +166,20 @@ export const getList = (get_what, get_id) => (dispatch, getState) => {
                 dispatch({type: COMMON_LOADED_LIST_ITEMS});
             });
     }
+    // EDUCATOR'S ACHIEVEMENTS ---------------------------------------------------------------------------------------- M L
+    else if (get_what === "Educator's Achievements") {
+        axios.get(`/api/educator/educator-user/get_achievements/`, tokenConfig(getState))
+            .then(res => {
+                dispatch({
+                    type: GET_LIST_ITEMS,
+                    payload: res.data
+                });
+            })
+            .catch(err => {
+                dispatch(returnErrors(err.response.data, err.response.status));
+                dispatch({type: COMMON_LOADED_LIST_ITEMS});
+            });
+    }
 };
 
 

@@ -6,7 +6,7 @@ import {getIds, changePage, changeView} from "../../../../actions/website";
 import {createItem, getDetails, resetDetails, getList, resetListItems} from "../../../../actions/educator";
 
 import BubbleMenuComponent, {button_types} from "../../../common/BubbleMenuComponent";
-import AddItemComponent from "../../../common/AddItemComponent";
+import FormComponent from "../../../common/FormComponent";
 import DetailsComponent from "../../../common/DetailsComponent";
 import ListComponent from "../../../common/ListComponent";
 
@@ -69,8 +69,8 @@ export class ModuleDashboard extends Component {
         // Add item component
         const form_context = {
             getFormContext: null,
-            createItem: this.props.createItem,
-            add_what: "Lesson",
+            submitFunction: this.props.createItem,
+            what: "Lesson",
             field_list: [
                 {field_type: "invisible", label: "", name: "module", start_value: this.props.ids.module},
                 {field_type: "image", label: "Lesson Image", name: "image"},
@@ -114,7 +114,7 @@ export class ModuleDashboard extends Component {
                         : null}
 
                     {this.props.ids.module && this.props.view === "add_lesson" ?
-                        <AddItemComponent form_context={form_context}
+                        <FormComponent form_context={form_context}
                         />
                         : null}
                 </div>

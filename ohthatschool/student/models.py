@@ -8,7 +8,6 @@ from educator.models import Educator
 class Student(models.Model):
     """Student Django model"""
     id = models.OneToOneField(UserProfile, related_name='student', on_delete=models.CASCADE, primary_key=True)
-    courses = models.ManyToManyField(Course, related_name='students', blank=True)
     educators = models.ManyToManyField(Educator, related_name='students', blank=True)
     categories = models.ManyToManyField(Category, related_name='students', blank=True)
     active = models.BooleanField(default=True)

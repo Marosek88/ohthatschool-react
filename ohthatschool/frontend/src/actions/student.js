@@ -110,9 +110,9 @@ export const getDetails = (get_what, get_id) => (dispatch, getState) => {
 export const getList = (get_what, get_id) => (dispatch, getState) => {
     dispatch({type: COMMON_LOADING_LIST_ITEMS});
 
-    // STUDENT'S COURSES ---------------------------------------------------------------------------------------- E C
+    // STUDENT'S COURSES ---------------------------------------------------------------------------------------- S C
     if (get_what === "Student's Courses") {
-        axios.get('/api/student/student-user/get_courses/', tokenConfig(getState))
+        axios.get('/api/student/student-course/get_student_courses', tokenConfig(getState))
             .then(res => {
                 dispatch({
                     type: GET_LIST_ITEMS,
@@ -153,9 +153,23 @@ export const getList = (get_what, get_id) => (dispatch, getState) => {
                 dispatch({type: COMMON_LOADED_LIST_ITEMS});
             });
     }
-    // EDUCATPR'S STUDENTS ---------------------------------------------------------------------------------------- M L
-    else if (get_what === "Students") {
-        axios.get(`/api/educator/educator-user/get_students/`, tokenConfig(getState))
+    // STUDENT'S EDUCATORS ---------------------------------------------------------------------------------------- S E
+    else if (get_what === "Educators") {
+        axios.get(`/api/student/student-user/get_educators/`, tokenConfig(getState))
+            .then(res => {
+                dispatch({
+                    type: GET_LIST_ITEMS,
+                    payload: res.data
+                });
+            })
+            .catch(err => {
+                dispatch(returnErrors(err.response.data, err.response.status));
+                dispatch({type: COMMON_LOADED_LIST_ITEMS});
+            });
+    }
+    // STUDENT'S ACHIEVEMENTS ---------------------------------------------------------------------------------------- S E
+    else if (get_what === "Student's Achievements") {
+        axios.get(`/api/student/student-user/get_achievements/`, tokenConfig(getState))
             .then(res => {
                 dispatch({
                     type: GET_LIST_ITEMS,

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Link, Redirect} from "react-router-dom";
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -38,32 +38,35 @@ export class ProfilePicture extends Component {
 
     render() {
         return (
-            <div className="col-md-6 m-auto">
-                <div className="card card-body mt-5">
-                    <ProfilePictureComponent user={this.props.user.user_profile} />
-                    <form onSubmit={this.onSubmit} encType="multipart/form-data">
+            <Fragment>
+                <h3>Profile Picture</h3>
+                <div className="col-md-6 m-auto">
+                    <div className="card card-body mt-5">
+                        <ProfilePictureComponent user={this.props.user.user_profile}/>
+                        <form onSubmit={this.onSubmit} encType="multipart/form-data">
 
-                        <div className="form-group">
-                            <label>Upload Image</label>
-                            <input
-                                type="file"
-                                id="image"
-                                accept="image/png, image/jpeg"
-                                onChange={this.handleImageChange}
-                                className="form-control"
-                                name="image"
-                                required
-                            />
-                        </div>
+                            <div className="form-group">
+                                <label>Upload Image</label>
+                                <input
+                                    type="file"
+                                    id="image"
+                                    accept="image/png, image/jpeg"
+                                    onChange={this.handleImageChange}
+                                    className="form-control"
+                                    name="image"
+                                    required
+                                />
+                            </div>
 
-                        <div className="form-group">
-                            <button type="submit" className="btn btn-primary">
-                                Upload
-                            </button>
-                        </div>
-                    </form>
+                            <div className="form-group">
+                                <button type="submit" className="btn btn-primary">
+                                    Upload
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </Fragment>
         );
     }
 }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Select from 'react-select'
 
 
-export class AddItemComponent extends Component {
+export class FormComponent extends Component {
     constructor(props) {
         super(props);
         let form_data = {};
@@ -24,7 +24,7 @@ export class AddItemComponent extends Component {
 
     componentDidMount() {
         if (this.props.form_context.getFormContext) {
-            this.props.form_context.getFormContext(this.props.form_context.add_what)
+            this.props.form_context.getFormContext(this.props.form_context.what)
         }
     }
 
@@ -81,7 +81,12 @@ export class AddItemComponent extends Component {
         e.preventDefault();
         let form = new FormData();
         this.prepareForm(form, this.state.form_data);
-        this.props.form_context.createItem(this.props.form_context.add_what, form);
+        const what_id = this.props.form_context.what_id ? this.props.form_context.what_id : null;
+        if (what_id) {
+                    this.props.form_context.submitFunction(this.props.form_context.what, what_id, form);
+        } else {
+                    this.props.form_context.submitFunction(this.props.form_context.what, form);
+        }
     };
 
     render() {
@@ -176,7 +181,7 @@ export class AddItemComponent extends Component {
 
         return (
             <div className="card card-body mt-4 mb-4">
-                <h2>Add {this.props.form_context.add_what}</h2>
+                <h2>Add {this.props.form_context.what}</h2>
                 {render_form}
             </div>
         );
@@ -188,4 +193,4 @@ const mapStateToProps = state => ({
     formLoading: state.common.formLoading,
 });
 
-export default connect(mapStateToProps)(AddItemComponent);
+export default connect(mapStateToProps)(FormComponent);

@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import auth from "./auth";
 import common from "./common";
-import course from "./course";
+import search from "./search";
 import educator from "./educator";
 import messages from "./messages";
 import website from "./website";
@@ -9,7 +9,7 @@ import website from "./website";
 export default combineReducers({
   auth,
   common,
-  course,
+  search,
   educator,
   messages,
   website,
