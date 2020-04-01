@@ -67,8 +67,8 @@ class EducatorUserViewSet(ElasticModelViewSet):
     @action(detail=False, methods=['GET'])
     def get_achievements(self, request):
         achievements = request.user.user_profile.educator.achievements.filter(type__in=[
-            Achievement.TypeChoices.FROM_PARENT_TO_EDUCATOR,
-            Achievement.TypeChoices.FROM_STUDENT_TO_EDUCATOR
+            Achievement.FROM_PARENT_TO_EDUCATOR,
+            Achievement.FROM_STUDENT_TO_EDUCATOR
         ])
         serializer = AchievementSerializer(achievements, many=True)
         return Response(serializer.data, 200)

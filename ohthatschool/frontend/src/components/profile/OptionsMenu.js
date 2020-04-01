@@ -20,7 +20,7 @@ export class OptionsMenu extends Component {
         }
 
         return (
-            <header className="index" style={{backgroundImage: "url('static/img/bg-profile-img.jpg')"}}>
+            <header className="index" style={{backgroundImage: "url('https://ohthatschool-react.s3.amazonaws.com/img/bg-profile-img.jpg')"}}>
                 <div className="overlay"/>
                 <div className="index-header mt-3 mt-md-5">
                     <p className="my-5">

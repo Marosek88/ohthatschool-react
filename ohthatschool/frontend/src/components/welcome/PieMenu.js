@@ -30,7 +30,7 @@ export class PieMenu extends Component {
 
     render() {
         return (
-            <header className="index" style={{backgroundImage: "url('static/img/bg-index.jpg')"}}>
+            <header className="index" style={{backgroundImage: "url('https://ohthatschool-react.s3.amazonaws.com/img/bg-index.jpg')"}}>
                 <div className="overlay"/>
                 <div className="index-header">
                     <p>
@@ -47,7 +47,7 @@ export class PieMenu extends Component {
                                          onClick={this.scrollToInfo}
                                     >
                                         <div className="index-pie-col-background"
-                                             style={{backgroundImage: "url('../../../static/img/pie-student.jpg')"}}/>
+                                             style={{backgroundImage: "url('https://ohthatschool-react.s3.amazonaws.com/img/pie-student.jpg')"}}/>
                                         <div className="index-pie-text index-pie-student">Students</div>
                                     </div>
 
@@ -56,7 +56,7 @@ export class PieMenu extends Component {
                                          onClick={this.scrollToInfo}
                                     >
                                         <div className="index-pie-col-background"
-                                             style={{backgroundImage: "url('../../../static/img/pie-educator.jpg')"}}/>
+                                             style={{backgroundImage: "url('https://ohthatschool-react.s3.amazonaws.com/img/pie-educator.jpg')"}}/>
                                         <div className="index-pie-text index-pie-educator">Educators</div>
                                     </div>
 
@@ -65,7 +65,7 @@ export class PieMenu extends Component {
                                          onClick={this.scrollToInfo}
                                     >
                                         <div className="index-pie-col-background"
-                                             style={{backgroundImage: "url('../../../static/img/pie-parent.jpg')"}}/>
+                                             style={{backgroundImage: "url('https://ohthatschool-react.s3.amazonaws.com/img/pie-parent.jpg')"}}/>
                                         <div className="index-pie-text index-pie-parent">Parents</div>
                                     </div>
 
@@ -74,7 +74,7 @@ export class PieMenu extends Component {
                                          onClick={this.scrollToInfo}
                                     >
                                         <div className="index-pie-col-background"
-                                             style={{backgroundImage: "url('../../../static/img/pie-school.jpg')"}}/>
+                                             style={{backgroundImage: "url('https://ohthatschool-react.s3.amazonaws.com/img/pie-school.jpg')"}}/>
                                         <div className="index-pie-text index-pie-school">Schools</div>
                                     </div>
                                 </div>

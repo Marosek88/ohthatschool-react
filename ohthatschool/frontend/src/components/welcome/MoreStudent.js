@@ -61,7 +61,7 @@ export class MoreStudent extends Component {
                         <div className="container-fluid wrapper-bg py-4">
                             <div className="row no-gutters">
                                 <div className="col-lg-6 order-lg-2 text-white showcase-img"
-                                     style={{background: "url('../../../static/img/bg-cloud.jpg') no-repeat center center"}}/>
+                                     style={{background: "url('https://ohthatschool-react.s3.amazonaws.com/img/bg-cloud.jpg') no-repeat center center"}}/>
                                 <div className="col-lg-6 order-lg-1 my-auto showcase-text">
                                     <h2>Connect and keep in touch</h2>
                                     <p className="lead mb-0">Find new inspiring educators and keep in touch with them
@@ -71,7 +71,7 @@ export class MoreStudent extends Component {
                             </div>
                             <div className="row no-gutters">
                                 <div className="col-lg-6 text-white showcase-img"
-                                     style={{background: "url('../../../static/img/bg-studying.jpg') no-repeat center center"}}/>
+                                     style={{background: "url('https://ohthatschool-react.s3.amazonaws.com/img/bg-studying.jpg') no-repeat center center"}}/>
                                 <div className="col-lg-6 my-auto showcase-text">
                                     <h2>Do your cramming at your own pace</h2>
                                     <p className="lead mb-0">The world wasn't built in one day. Do your studying at
@@ -81,7 +81,7 @@ export class MoreStudent extends Component {
                             </div>
                             <div className="row no-gutters">
                                 <div className="col-lg-6 order-lg-2 text-white showcase-img"
-                                     style={{background: "url('../../../static/img/bg-tutoring.jpg') no-repeat center center"}}/>
+                                     style={{background: "url('https://ohthatschool-react.s3.amazonaws.com/img/bg-tutoring.jpg') no-repeat center center"}}/>
                                 <div className="col-lg-6 order-lg-1 my-auto showcase-text">
                                     <h2>Meet your local educator</h2>
                                     <p className="lead mb-0">If you choose to work with a local tutor, you can arrange
@@ -90,7 +90,7 @@ export class MoreStudent extends Component {
                             </div>
                             <div className="row no-gutters">
                                 <div className="col-lg-6 text-white showcase-img"
-                                     style={{background: "url('../../../static/img/bg-portfolio.jpg') no-repeat center center"}}/>
+                                     style={{background: "url('https://ohthatschool-react.s3.amazonaws.com/img/bg-portfolio.jpg') no-repeat center center"}}/>
                                 <div className="col-lg-6 my-auto showcase-text">
                                     <h2>Build your portfolio</h2>
                                     <p className="lead mb-0">Keep all of your homework and assignments in one place -

@@ -15,7 +15,7 @@ export class ComingSoonComponent extends Component {
             ];
 
         return (
-                <header className="index" style={{backgroundImage: "url('static/img/bg-coming-soon.jpg')"}}>
+                <header className="index" style={{backgroundImage: "url('https://ohthatschool-react.s3.amazonaws.com/img/bg-coming-soon.jpg')"}}>
                     <div className="overlay"/>
 
                     <div className="index-header mt-3 mt-md-5">

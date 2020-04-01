@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react';
 export class ProfilePictureComponent extends Component {
 
     render() {
-        let picture = '/static/img/zygzak.jpg';
+        let picture = 'https://ohthatschool-react.s3.amazonaws.com/img/zygzak.jpg';
         if (this.props.user) {
             picture = this.props.user.image ? this.props.user.image : picture
         } else if (this.props.image) {

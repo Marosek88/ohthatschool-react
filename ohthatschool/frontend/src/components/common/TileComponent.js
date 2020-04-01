@@ -28,7 +28,7 @@ export class TileComponent extends Component {
 
         const image_render = tile_data.image ?
             <div className="tile-img" style={{backgroundImage: `url(${tile_data.image})`}}/> :
-            <div className="tile-img" style={{backgroundImage: "url('/static/img/zygzak.jpg')"}}/>;
+            <div className="tile-img" style={{backgroundImage: "url('https://ohthatschool-react.s3.amazonaws.com/img/zygzak.jpg')"}}/>;
 
         return (
             <Fragment>
